@@ -35,12 +35,6 @@
     </Reference>
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="GameTypes">
-      <HintPath>..\..\Libraries\GameTypes.dll</HintPath>
-    </Reference>
-    <Reference Include="Relay">
-      <HintPath>..\..\Libraries\Relay.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="src\Interfaces\IPreloadable.cs" />
@@ -59,9 +53,17 @@
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
+    <ProjectReference Include="..\..\GameTypes\GameTypes\GameTypes.csproj">
+      <Project>{EC63C4E3-C5B8-4EB1-90CD-2D2FC17801BD}</Project>
+      <Name>GameTypes</Name>
+    </ProjectReference>
     <ProjectReference Include="..\..\Pathfinding\Pathfinding\Pathfinding.csproj">
       <Project>{B88C6623-0FC9-4F9C-8D64-F70599C12205}</Project>
       <Name>Pathfinding</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Relay\Relay\Relay.csproj">
+      <Project>{9CFC0B9C-EC60-4488-9D4A-79F191AA5AFF}</Project>
+      <Name>Relay</Name>
     </ProjectReference>
   </ItemGroup>
 </Project>

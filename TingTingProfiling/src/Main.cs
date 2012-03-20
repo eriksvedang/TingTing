@@ -28,8 +28,8 @@ namespace TingTingProfiling
 		{
 			RelayTwo relay = new RelayTwo();
 			relay.CreateTable(Ting.TABLE_NAME);
-			TingRunner tingRunner = new TingRunner(relay);
-			TestTing1UsingCellIdWithConvenienceFunctions t = tingRunner.CreateTing<TestTing1UsingCellIdWithConvenienceFunctions>("TestTing");
+			TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
+			TestTing1UsingCellIdWithConvenienceFunctions t = tingRunner.CreateTing<TestTing1UsingCellIdWithConvenienceFunctions>("TestTing", WorldCoordinate.NONE);
 			Console.WriteLine("Using class " + t.ToString());
 			for(int i = 0; i < COUNTER; i++)
 			{
@@ -44,8 +44,8 @@ namespace TingTingProfiling
 		{
 			RelayTwo relay = new RelayTwo();			
 			relay.CreateTable(Ting.TABLE_NAME);
-			TingRunner tingRunner = new TingRunner(relay);
-			TestTing2UsingNormalAccessor t = tingRunner.CreateTing<TestTing2UsingNormalAccessor>("TestTing");
+			TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
+			TestTing2UsingNormalAccessor t = tingRunner.CreateTing<TestTing2UsingNormalAccessor>("TestTing", WorldCoordinate.NONE);
 			Console.WriteLine("Using class " + t.ToString());
 			for(int i = 0; i < COUNTER; i++)
 			{
