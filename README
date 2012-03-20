@@ -1,0 +1,1 @@
+Simple framework for entity management when writing a Unity game that wants to use the Relay library for saving and loading of state. Written by Erik Svedäng and Johannes Gotlén in C#.

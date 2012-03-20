@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{F2337BB6-9555-45F7-BEFC-1E3D2B5DE225}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TingTingProfiling</RootNamespace>
+    <AssemblyName>TingTingProfiling</AssemblyName>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="src\Main.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <Folder Include="src\" />
+    <Folder Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\GameTypes\GameTypes\GameTypes.csproj">
+      <Project>{EC63C4E3-C5B8-4EB1-90CD-2D2FC17801BD}</Project>
+      <Name>GameTypes</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\TingTing\TingTing.csproj">
+      <Project>{C9BF9326-03A2-482A-B8A2-23FD0C848A2E}</Project>
+      <Name>TingTing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Relay\Relay\Relay.csproj">
+      <Project>{9CFC0B9C-EC60-4488-9D4A-79F191AA5AFF}</Project>
+      <Name>Relay</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>

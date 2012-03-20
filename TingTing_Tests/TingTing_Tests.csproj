@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.21022</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{4CB659E0-92F0-42A2-AAA8-861BFCAFEF2C}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <RootNamespace>TingTing_Tests</RootNamespace>
+    <AssemblyName>TingTing_Tests</AssemblyName>
+    <StartupObject>TingTing_Tests.MainClass</StartupObject>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug</OutputPath>
+    <DefineConstants>DEBUG;</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <Externalconsole>true</Externalconsole>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>none</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Release</OutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <ConsolePause>false</ConsolePause>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="nunit.framework">
+      <HintPath>..\TingTing\bin\Debug\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Relay">
+      <HintPath>..\..\Libraries\Relay.dll</HintPath>
+    </Reference>
+    <Reference Include="GameTypes">
+      <HintPath>..\..\Libraries\GameTypes.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="AssemblyInfo.cs" />
+    <Compile Include="tests\TingRunnerTest.cs" />
+    <Compile Include="tests\TingSpecialForcesTest.cs" />
+    <Compile Include="tests\TingTest.cs" />
+    <Compile Include="tests\TileNodeTest.cs" />
+    <Compile Include="tests\RoomTest.cs" />
+    <Compile Include="Main.cs" />
+    <Compile Include="tests\WorldCoordinateTests.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <ItemGroup>
+    <ProjectReference Include="..\TingTing\TingTing.csproj">
+      <Project>{C9BF9326-03A2-482A-B8A2-23FD0C848A2E}</Project>
+      <Name>TingTing</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\..\Pathfinding\Pathfinding\Pathfinding.csproj">
+      <Project>{B88C6623-0FC9-4F9C-8D64-F70599C12205}</Project>
+      <Name>Pathfinding</Name>
+    </ProjectReference>
+  </ItemGroup>
+</Project>
