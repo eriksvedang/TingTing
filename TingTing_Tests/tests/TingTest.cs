@@ -60,7 +60,7 @@ namespace TingTing.tests
 		[Test]
 		public void SettingNameOfTing ()
 		{
-            Ting t = InstantiatorTwo.Create<TingConcrete>(_table);
+            Ting t = InstantiatorTwo.Create<MyTing>(_table);
             t.SetInitCreateValues("Monkey", WorldCoordinate.NONE, Direction.UP);
 			t.CreateNewRelayEntry(_table, "MyTing");
 			Assert.AreEqual("Monkey", t.name);

@@ -3,47 +3,48 @@ using RelayLib;
 using NUnit.Framework;
 using System.Reflection;
 using GameTypes;
+
 namespace TingTing.tests
 {
-	[TestFixture()]
-	public class TingRunnerTest
-	{
-		public class Animal : Ting
-		{
+    [TestFixture()]
+ public class TingRunnerTest
+    {
+        public class Animal : Ting
+        {
             ValueEntry<string> CELL_species;
-			ValueEntry<int> CELL_age;
-			
-			protected override void SetupCells()
-			{
-				base.SetupCells();
-				CELL_species = EnsureCell("species", "unknown species");
+            ValueEntry<int> CELL_age;
+         
+            protected override void SetupCells()
+            {
+                base.SetupCells();
+                CELL_species = EnsureCell("species", "unknown species");
                 CELL_age = EnsureCell("age", 0);
-			}
-			
-			public string species {
-				get {
-					return CELL_species.data;
-				}
-				set {
-					CELL_species.data = value;
-				}
-			}
-			
-			public int age {
-				get {
-					return CELL_age.data;
-				}
-				set {
+            }
+         
+            public string species {
+                get {
+                    return CELL_species.data;
+                }
+                set {
+                    CELL_species.data = value;
+                }
+            }
+         
+            public int age {
+                get {
+                    return CELL_age.data;
+                }
+                set {
                     CELL_age.data = value;
-				}
-			}
-		}
-		
-		[Test()]
-		public void InstantiateFromDatabase()
-		{
+                }
+            }
+        }
+     
+        [Test()]
+        public void InstantiateFromDatabase()
+        {
             RelayTwo relay = new RelayTwo();
-			TableTwo table = relay.CreateTable(Ting.TABLE_NAME);
+            TableTwo table = relay.CreateTable(Ting.TABLE_NAME);
             relay.CreateTable(Room.TABLE_NAME);
             table.AddField<string>(RelayObjectTwo.CSHARP_CLASS_FIELD_NAME);
             table.AddField<string>("species");
@@ -62,47 +63,48 @@ namespace TingTing.tests
             table.SetValue(row1, "species", "Horse");
             table.SetValue(row1, "name", "Lilla Gubben");
             table.SetValue(row1, "age", 50);
-			
-			TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
-			
-			Animal herrNilsson = tingRunner.GetTing("Herr Nilsson") as Animal;
-			Animal lillaGubben = tingRunner.GetTing("Lilla Gubben") as Animal;
-			
-			Assert.IsNotNull(herrNilsson);
-			Assert.IsNotNull(lillaGubben);
-			Assert.AreEqual(78, herrNilsson.age);
-			Assert.AreEqual(50, lillaGubben.age);
-		}
-		
-		[Test()]
-		public void TryingToInstantiateNonexistingClass()
-		{
-
+         
+            TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
+         
+            Animal herrNilsson = tingRunner.GetTing("Herr Nilsson") as Animal;
+            Animal lillaGubben = tingRunner.GetTing("Lilla Gubben") as Animal;
+         
+            Assert.IsNotNull(herrNilsson);
+            Assert.IsNotNull(lillaGubben);
+            Assert.AreEqual(78, herrNilsson.age);
+            Assert.AreEqual(50, lillaGubben.age);
+        }
+     
+        [Test()]
+        public void TryingToInstantiateNonexistingClass()
+        {
             RelayTwo relay = new RelayTwo();
             TableTwo table = relay.CreateTable(Ting.TABLE_NAME);
             relay.CreateTable(Room.TABLE_NAME);
             table.AddField<string>(RelayObjectTwo.CSHARP_CLASS_FIELD_NAME);
             table.CreateRow().Set(RelayObjectTwo.CSHARP_CLASS_FIELD_NAME, "invalid class name");
-			Assert.Throws<CantFindClassWithNameException>(() =>
+            Assert.Throws<CantFindClassWithNameException>(() =>
             {
-				new TingRunner(relay, new RoomRunner(relay));
-			});
-		}
+                new TingRunner(relay, new RoomRunner(relay));
+            });
+        }
 
-		[Test()]
-		public void TryingToGetTingWithWrongName()
-		{
+        [Test()]
+        public void TryingToGetTingWithWrongName()
+        {
             RelayTwo relay = new RelayTwo();
-            TableTwo t = relay.CreateTable(Ting.TABLE_NAME);
+            relay.CreateTable(Ting.TABLE_NAME);
             relay.CreateTable(Room.TABLE_NAME);
-			TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
-			
-			Assert.Throws<CantFindTingException>(() =>
+            TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
+         
+            Assert.Throws<CantFindTingException>(() =>
             {
-				tingRunner.GetTing("wrong ting name");
-			});
-		}
+                tingRunner.GetTing("wrong ting name");
+            });
+        }
+
         RelayTwo relay = null;
+
         TingRunner CreateTingRunnerWithSomeRoom()
         {
             relay = new RelayTwo();
@@ -113,103 +115,99 @@ namespace TingTing.tests
             TingRunner tingRunner = new TingRunner(relay, rr);
             return tingRunner;
         }
-		[Test()]
-		public void CreateNewTingDuringRuntime() 
-		{
+
+        [Test()]
+        public void CreateNewTingDuringRuntime()
+        {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
-			tingRunner.CreateTing<Animal>("Joe", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-			
-			Animal a = tingRunner.GetTing("Joe") as Animal;
-			Assert.IsNotNull(a);
-		}
-		
-		[Test()]
-		public void SetupTingsThenSaveAndLoadFromDisk()
-		{
-			{
+            tingRunner.CreateTing<Animal>("Joe", new WorldCoordinate("SomeRoom", IntPoint.Zero));
+         
+            Animal a = tingRunner.GetTing("Joe") as Animal;
+            Assert.IsNotNull(a);
+        }
+     
+        [Test()]
+        public void SetupTingsThenSaveAndLoadFromDisk()
+        {
+            {
                 TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
 
                 Animal bo = tingRunner.CreateTing<Animal>("Bo", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-				bo.species = "cow";
-				bo.age = 10;
+                bo.species = "cow";
+                bo.age = 10;
                 Animal howly = tingRunner.CreateTing<Animal>("Howly", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-				howly.species = "owl";
-				
-				Assert.AreEqual("cow", bo.species);
-				Assert.AreEqual(10, bo.age);
-				Assert.AreEqual("owl", howly.species);
-				Assert.AreEqual(0, howly.age); // <- default value
-				
-				howly.age = 35;
-				
-				 relay.SaveAll("farm.json");
-			}
-			
-			{
+                howly.species = "owl";
+             
+                Assert.AreEqual("cow", bo.species);
+                Assert.AreEqual(10, bo.age);
+                Assert.AreEqual("owl", howly.species);
+                Assert.AreEqual(0, howly.age); // <- default value
+             
+                howly.age = 35;
+             
+                relay.SaveAll("farm.json");
+            }
+         
+            {
                 relay = new RelayTwo();
-				relay.LoadAll("farm.json");
+                relay.LoadAll("farm.json");
                 TingRunner tingRunner = new TingRunner(relay, new RoomRunner(relay));
-				
-				Animal bo = tingRunner.GetTing("Bo") as Animal;
-				Animal howly = tingRunner.GetTing("Howly") as Animal;
-				
-				Assert.AreEqual("cow", bo.species);
-				Assert.AreEqual(10, bo.age);
-				Assert.AreEqual("owl", howly.species);
-				Assert.AreEqual(35, howly.age);
-			}
-		}
-		
-		[Test()]
-		public void GetTingFromObjectId() 
-		{
+             
+                Animal bo = tingRunner.GetTing("Bo") as Animal;
+                Animal howly = tingRunner.GetTing("Howly") as Animal;
+             
+                Assert.AreEqual("cow", bo.species);
+                Assert.AreEqual(10, bo.age);
+                Assert.AreEqual("owl", howly.species);
+                Assert.AreEqual(35, howly.age);
+            }
+        }
+     
+        [Test()]
+        public void GetTingFromObjectId()
+        {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
-			Ting puma = tingRunner.CreateTing<Animal>("Puma", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-			
-			Ting samePuma = tingRunner.GetTing(puma.name);
-			Assert.AreSame(puma, samePuma);
-		}
-		
-		[Test()]
-		public void HasTing() 
-		{
+            Ting puma = tingRunner.CreateTing<Animal>("Puma", new WorldCoordinate("SomeRoom", IntPoint.Zero));
+            Ting samePuma = tingRunner.GetTing(puma.name);
+
+            Assert.AreSame(puma, samePuma);
+        }
+     
+        [Test()]
+        public void HasTing()
+        {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
             tingRunner.CreateTing<Animal>("Puma", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-			
-			Assert.IsTrue(tingRunner.HasTing("Puma"));
-
-			Assert.IsFalse(tingRunner.HasTing("Donkey"));
-
-		}
-		
-		[Test()]
-		public void RemoveTingUsingObjectId() 
-		{
+         
+            Assert.IsTrue(tingRunner.HasTing("Puma"));
+            Assert.IsFalse(tingRunner.HasTing("Donkey"));
+        }
+     
+        [Test()]
+        public void RemoveTingUsingObjectId()
+        {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
             tingRunner.CreateTing<Animal>("Bee", new WorldCoordinate("SomeRoom", IntPoint.Zero));
             tingRunner.CreateTing<Animal>("Spider", new WorldCoordinate("SomeRoom", IntPoint.Zero));
             tingRunner.CreateTing<Animal>("Ant", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-			
 
-			
-			Assert.IsTrue(tingRunner.HasTing("Bee"));
-
-			Assert.IsTrue(tingRunner.HasTing("Ant"));
-		}
-		
-		[Test()]
-		public void RemoveTingUsingName() 
-		{
+            Assert.IsTrue(tingRunner.HasTing("Bee"));
+            Assert.IsTrue(tingRunner.HasTing("Ant"));
+        }
+     
+        [Test()]
+        public void RemoveTingUsingName()
+        {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
             tingRunner.CreateTing<Animal>("Bee", new WorldCoordinate("SomeRoom", IntPoint.Zero));
             tingRunner.CreateTing<Animal>("Spider", new WorldCoordinate("SomeRoom", IntPoint.Zero));
             tingRunner.CreateTing<Animal>("Ant", new WorldCoordinate("SomeRoom", IntPoint.Zero));
-			
-			tingRunner.RemoveTing("Bee");
-			
-			Assert.IsFalse(tingRunner.HasTing("Bee"));
-			Assert.IsTrue(tingRunner.HasTing("Spider"));
-			Assert.IsTrue(tingRunner.HasTing("Ant"));
-		}
-	}
+         
+            tingRunner.RemoveTing("Bee");
+         
+            Assert.IsFalse(tingRunner.HasTing("Bee"));
+            Assert.IsTrue(tingRunner.HasTing("Spider"));
+            Assert.IsTrue(tingRunner.HasTing("Ant"));
+        }
+    }
 }

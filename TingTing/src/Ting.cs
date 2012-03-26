@@ -7,8 +7,6 @@ using System.Runtime.CompilerServices;
 
 namespace TingTing
 {
-    public class TingConcrete : Ting { }
-	
 	public abstract class Ting : RelayObjectTwo
 	{
 		public static readonly string TABLE_NAME = "Ting_Base";
