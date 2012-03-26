@@ -43,6 +43,7 @@ namespace TingTing
             foreach (PointTileNode ptn in _tilesByLocalPositionHash.Values) {
                 AddTileLinks(ptn);
             }
+            RefreshTileData();
         }
 
         public string name {
@@ -67,7 +68,6 @@ namespace TingTing
                 PointTileNode newNode = new PointTileNode(t, this);
                 _tilesByLocalPositionHash.Add(newNode.localPoint.GetHashCode(), newNode);
             }
-            CELL_tiles.data = (from PointTileNode n in _tilesByLocalPositionHash.Values select n.localPoint).ToArray();
         }
 
         private void AddTileLinks(PointTileNode tileNode)
@@ -89,12 +89,16 @@ namespace TingTing
             if (_tilesByLocalPositionHash.TryGetValue(new IntPoint(x, y - 1).GetHashCode(), out outputNode)) {
                 ConnectNodes(start, outputNode);
             }
+        }
 
+        private void RefreshTileData()
+        {
             CELL_tiles.data = (from PointTileNode n in _tilesByLocalPositionHash.Values select n.localPoint).ToArray();
         }
 
         public void AddTile(PointTileNode pTileNode)
         {
+            Console.WriteLine("Warning, this is slow");
             try {
                 _tilesByLocalPositionHash.Add(pTileNode.localPoint.GetHashCode(), pTileNode);
             }
@@ -102,6 +106,7 @@ namespace TingTing
                 throw new Exception("Could not add tileNode at: " + pTileNode.localPoint.ToString() + " hashcode " + pTileNode.GetHashCode(), e);
             }
             AddTileLinks(pTileNode);
+            RefreshTileData();
             UpdateBounds();
         }
 
@@ -155,11 +160,12 @@ namespace TingTing
         private void ConnectNodes(PointTileNode pA, PointTileNode pB)
         {
             PathLink l = pB.GetLinkTo(pA);
-            if (l == null)
+            if (l == null) {
                 l = new PathLink(pA, pB);
-            l.distance = 1f;
-            pA.AddLink(l);
-            pB.AddLink(l);
+                l.distance = 1f;
+                pA.AddLink(l);
+                pB.AddLink(l);
+            }
         }
     }
 }
