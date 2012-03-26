@@ -7,7 +7,7 @@ using GameTypes;
 namespace TingTing.tests
 {
     [TestFixture()]
- public class TingRunnerTest
+    public class TingRunnerTest
     {
         public class Animal : Ting
         {
