@@ -7,3 +7,8 @@
 *.xml
 test-results
 *.exe
+
+GameTypes.dll
+Relay.dll
+Pathfinding.dll
+TingTing.dll
