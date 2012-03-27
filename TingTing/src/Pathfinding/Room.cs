@@ -100,7 +100,7 @@ namespace TingTing
         public void AddTile(PointTileNode pTileNode)
         {
 #if DEBUG
-            Console.WriteLine("Called Room.AddTile() Warning, this is slow"); //. Callstack: " + Environment.StackTrace);
+            //Console.WriteLine("Called Room.AddTile() Warning, this is slow"); //. Callstack: " + Environment.StackTrace);
 #endif
             try {
                 _tilesByLocalPositionHash.Add(pTileNode.localPoint.GetHashCode(), pTileNode);
