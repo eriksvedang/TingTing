@@ -68,7 +68,7 @@ namespace TingTing
                     if (pl == null) {
                         pl = new PathLink(this, value);
                     }
-                    Console.WriteLine("added link between " + (pl.nodeA as TileNode).ToString() + "\nand " + (pl.nodeB as TileNode).ToString());
+                    //Console.WriteLine("added link between " + (pl.nodeA as TileNode).ToString() + "\nand " + (pl.nodeB as TileNode).ToString());
                     AddLink(pl);
                 }
                 _target = value;

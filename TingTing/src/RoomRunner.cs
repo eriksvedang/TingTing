@@ -91,6 +91,11 @@ namespace TingTing
         }
 
         #endregion
+
+        public override string ToString()
+        {
+            return string.Format("RoomRunner: {0} rooms", _rooms.Count);
+        }
     }
 }
 

@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using Pathfinding;
+using System.Diagnostics;
 
 namespace TingTing
 {
@@ -98,7 +99,9 @@ namespace TingTing
 
         public void AddTile(PointTileNode pTileNode)
         {
-            Console.WriteLine("Warning, this is slow");
+#if DEBUG
+            Console.WriteLine("Called Room.AddTile() Warning, this is slow"); //. Callstack: " + Environment.StackTrace);
+#endif
             try {
                 _tilesByLocalPositionHash.Add(pTileNode.localPoint.GetHashCode(), pTileNode);
             }
