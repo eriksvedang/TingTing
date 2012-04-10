@@ -100,7 +100,7 @@ namespace TingTing
 			}
 		}
 		
-		protected void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
+		public void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
 		{
 			string oldAction = actionName;
 #if DEBUG
