@@ -69,6 +69,15 @@ namespace TingTing
                 PointTileNode newNode = new PointTileNode(t, this);
                 _tilesByLocalPositionHash.Add(newNode.localPoint.GetHashCode(), newNode);
             }
+            ApplyTileData();
+        }
+
+        /// <summary>
+        /// Warning, too slow to run for each tile during load
+        /// </summary>
+        public void ApplyTileData()
+        {
+            CELL_tiles.data = (from PointTileNode n in _tilesByLocalPositionHash.Values select n.localPoint).ToArray();
         }
 
         private void AddTileLinks(PointTileNode tileNode)
