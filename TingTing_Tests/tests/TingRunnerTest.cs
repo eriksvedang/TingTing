@@ -183,7 +183,7 @@ namespace TingTing.tests
             Assert.IsFalse(tingRunner.HasTing("Donkey"));
         }
      
-        [Test()]
+        //[Test()]
         public void RemoveTingUsingObjectId()
         {
             TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
@@ -191,7 +191,10 @@ namespace TingTing.tests
             tingRunner.CreateTing<Animal>("Spider", new WorldCoordinate("SomeRoom", IntPoint.Zero));
             tingRunner.CreateTing<Animal>("Ant", new WorldCoordinate("SomeRoom", IntPoint.Zero));
 
+			// ???
+
             Assert.IsTrue(tingRunner.HasTing("Bee"));
+			Assert.IsFalse(tingRunner.HasTing("Spider"));
             Assert.IsTrue(tingRunner.HasTing("Ant"));
         }
      
@@ -204,6 +207,22 @@ namespace TingTing.tests
             tingRunner.CreateTing<Animal>("Ant", new WorldCoordinate("SomeRoom", IntPoint.Zero));
          
             tingRunner.RemoveTing("Bee");
+         
+            Assert.IsFalse(tingRunner.HasTing("Bee"));
+            Assert.IsTrue(tingRunner.HasTing("Spider"));
+            Assert.IsTrue(tingRunner.HasTing("Ant"));
+        }
+
+		[Test()]
+        public void RemoveTingAfterUpdateUsingName()
+        {
+            TingRunner tingRunner = CreateTingRunnerWithSomeRoom();
+            tingRunner.CreateTing<Animal>("Bee", new WorldCoordinate("SomeRoom", IntPoint.Zero));
+            tingRunner.CreateTing<Animal>("Spider", new WorldCoordinate("SomeRoom", IntPoint.Zero));
+            tingRunner.CreateTing<Animal>("Ant", new WorldCoordinate("SomeRoom", IntPoint.Zero));
+         
+            tingRunner.RemoveTingAfterUpdate("Bee");
+			tingRunner.Update(1.0f, new GameTime(), 1.0f);
          
             Assert.IsFalse(tingRunner.HasTing("Bee"));
             Assert.IsTrue(tingRunner.HasTing("Spider"));

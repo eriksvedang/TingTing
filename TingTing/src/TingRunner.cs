@@ -17,6 +17,7 @@ namespace TingTing
 
         private RelayTwo _relay = null;
         private Dictionary<string, TableTwo> _loadedTingTables = new Dictionary<string, TableTwo>();
+        private List<string> _tingsToRemoveAfterUpdate = new List<string>();
 
         public TingRunner(RelayTwo pRelay, RoomRunner pRoomRunner)
         {
@@ -158,7 +159,13 @@ namespace TingTing
         {
             Ting tingToRemove = GetTing(pName);
             tingToRemove.table.RemoveRowAt(tingToRemove.objectId);
+            tingToRemove.isDeleted = true;
             _tings.Remove(pName);
+        }
+
+        public void RemoveTingAfterUpdate(string pName)
+        {
+            _tingsToRemoveAfterUpdate.Add(pName);
         }
      
         public IEnumerable<Ting> GetTings()
@@ -174,6 +181,10 @@ namespace TingTing
                 t.Update(dt);
                 t.UpdateAction(pActionTime);
             }
+            foreach(string name in _tingsToRemoveAfterUpdate) {
+                RemoveTing(name);
+            }
+            _tingsToRemoveAfterUpdate.Clear();
         }
 
         public override string ToString()

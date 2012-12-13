@@ -14,6 +14,7 @@ namespace TingTing
 		protected TingRunner _tingRunner;
         protected RoomRunner _roomRunner;
 		private bool _isOccupyingTile = false;
+        public bool isDeleted { get; set; }
 		
 		public delegate void OnNewAction(string pOldAction, string pNewAction);
 		public OnNewAction onNewAction;
