@@ -21,12 +21,11 @@ namespace TingTing
     {
         public const string TABLE_NAME = "Rooms";
 
-        public IntPoint worldPosition { set; get; }
-
         internal Dictionary<int, PointTileNode> _tilesByLocalPositionHash = new Dictionary<int, PointTileNode>();
         private ValueEntry<string> CELL_name = null;
         private ValueEntry<IntPoint[]> CELL_tiles = null;
         private ValueEntry<bool> CELL_exterior = null;
+        private ValueEntry<IntPoint> CELL_worldPosition = null;
 
         protected override void SetupCells()
         {
@@ -37,6 +36,7 @@ namespace TingTing
                 SetTiles(points);
             }
             CELL_exterior = EnsureCell<bool>("exterior", false);
+            CELL_worldPosition = EnsureCell<IntPoint>("worldPosition", IntPoint.Zero);
         }
      
         #region ACCESSORS
@@ -81,6 +81,7 @@ namespace TingTing
                 _tilesByLocalPositionHash.Add(newNode.localPoint.GetHashCode(), newNode);
             }
             ApplyTileData();
+            UpdateBounds();
         }
 
         /// <summary>
@@ -188,6 +189,15 @@ namespace TingTing
                 l.distance = 1f;
                 pA.AddLink(l);
                 pB.AddLink(l);
+            }
+        }
+
+        public IntPoint worldPosition {
+            set {
+                CELL_worldPosition.data = value;
+            }
+            get {
+                return CELL_worldPosition.data;
             }
         }
     }
