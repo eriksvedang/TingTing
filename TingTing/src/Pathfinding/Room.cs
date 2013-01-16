@@ -26,6 +26,7 @@ namespace TingTing
         internal Dictionary<int, PointTileNode> _tilesByLocalPositionHash = new Dictionary<int, PointTileNode>();
         private ValueEntry<string> CELL_name = null;
         private ValueEntry<IntPoint[]> CELL_tiles = null;
+        private ValueEntry<bool> CELL_exterior = null;
 
         protected override void SetupCells()
         {
@@ -35,6 +36,7 @@ namespace TingTing
             if (points.Length > 0) {
                 SetTiles(points);
             }
+            CELL_exterior = EnsureCell<bool>("exterior", false);
         }
      
         #region ACCESSORS
@@ -58,6 +60,15 @@ namespace TingTing
 
         public IntPoint[] tilePoints {
             get { return CELL_tiles.data; }
+        }
+
+        public bool exterior {
+            get {
+                return CELL_exterior.data;
+            }
+            set {
+                CELL_exterior.data = value;
+            }
         }
 
         #endregion
