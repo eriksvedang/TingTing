@@ -12,3 +12,6 @@ GameTypes.dll
 Relay.dll
 Pathfinding.dll
 TingTing.dll
+*.pdb
+TingTing/TingTing.csproj.user
+TingTing/obj/
