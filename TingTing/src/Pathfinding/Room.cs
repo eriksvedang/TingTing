@@ -70,6 +70,7 @@ namespace TingTing
                 _tilesByLocalPositionHash.Add(newNode.localPoint.GetHashCode(), newNode);
             }
             ApplyTileData();
+            UpdateBounds();
         }
 
         /// <summary>
