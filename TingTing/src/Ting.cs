@@ -67,7 +67,7 @@ namespace TingTing
 			CELL_prefab = EnsureCell("prefab", "unspecified");
 			CELL_isBeingHeld = EnsureCell("isBeingHeld", false);
 		}
-		
+	
 		#endregion
 		
 		#region ACTIONS
@@ -138,6 +138,18 @@ namespace TingTing
 				CELL_name.data = value;
 			}
 		}
+
+        public bool HasInteractionPointHere(WorldCoordinate finalTargetPosition)
+        {
+            if(room.name == finalTargetPosition.roomName) {
+                foreach(IntPoint pos in interactionPoints) {
+                    if(finalTargetPosition.localPosition == pos) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
 		
         [ShowInEditor]
         public WorldCoordinate position
