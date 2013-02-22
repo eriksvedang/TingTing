@@ -17,6 +17,8 @@ namespace TingTing
 
         private RelayTwo _relay = null;
         private Dictionary<string, TableTwo> _loadedTingTables = new Dictionary<string, TableTwo>();
+
+        private List<Ting> _tingsToAddAfterUpdate = new List<Ting>();
         private List<string> _tingsToRemoveAfterUpdate = new List<string>();
 
         public TingRunner(RelayTwo pRelay, RoomRunner pRoomRunner)
@@ -75,8 +77,8 @@ namespace TingTing
                 pRelay.CreateTable(tableName);
             return pRelay.tables[tableName];
         }
-     
-        public virtual T CreateTing<T>(string pName, WorldCoordinate pPosition, Direction pDirection) where T : Ting
+
+        protected T CreateTingWithoutAddingItToList<T>(string pName, WorldCoordinate pPosition, Direction pDirection) where T : Ting
         {
             Type t = typeof(T);
             TableTwo table = AssertTable(t, _relay);
@@ -88,6 +90,12 @@ namespace TingTing
             newTing.SetupBaseRunners(this, _roomRunner);
             newTing.SetInitCreateValues(pName, pPosition, pDirection);
             newTing.CreateNewRelayEntry(table, t.Name);
+            return newTing;
+        }
+     
+        public virtual T CreateTing<T>(string pName, WorldCoordinate pPosition, Direction pDirection) where T : Ting
+        {
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pPosition, pDirection);
             AddTing(newTing);
             return newTing;
         }
@@ -96,6 +104,13 @@ namespace TingTing
         public T CreateTing<T>(string pName, WorldCoordinate pWorldCoordinate) where T : Ting
         {
             return CreateTing<T>(pName, pWorldCoordinate, Direction.RIGHT);
+        }
+
+        public virtual T CreateTingAfterUpdate<T>(string pName, WorldCoordinate pWorldCoordinate, Direction pDirection) where T : Ting
+        {
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pWorldCoordinate, pDirection);
+            _tingsToAddAfterUpdate.Add(newTing);
+            return newTing;
         }
      
         /// <returns>
@@ -148,6 +163,17 @@ namespace TingTing
             }
             return tingsOfType.ToArray();
         }
+
+        public TingType[] GetTingsOfTypeInRoom<TingType>(string pRoomName) where TingType : Ting
+        {
+            List<TingType> tingsInRoomOfType = new List<TingType>();
+            foreach (Ting t in _tings.Values) {
+                if (t is TingType && t.position.roomName == pRoomName) {
+                    tingsInRoomOfType.Add(t as TingType);
+                }
+            }
+            return tingsInRoomOfType.ToArray();
+        }
      
         public bool HasTing(string pName)
         {
@@ -181,6 +207,10 @@ namespace TingTing
                 t.Update(dt);
                 t.UpdateAction(pActionTime);
             }
+            foreach(Ting t in _tingsToAddAfterUpdate) {
+                AddTing(t);
+            }
+            _tingsToAddAfterUpdate.Clear();
             foreach(string name in _tingsToRemoveAfterUpdate) {
                 RemoveTing(name);
             }
