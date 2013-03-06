@@ -283,7 +283,7 @@ namespace TingTing
 			}
 		}
 		
-		[ShowInEditor]
+		[EditableInEditor]
 		public string prefab {
 			get {
                 return CELL_prefab.data;
