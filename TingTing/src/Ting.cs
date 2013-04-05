@@ -122,8 +122,10 @@ namespace TingTing
 #if DEBUG
 			logger.Log("Stopping action '" + actionName + "' at time " + _tingRunner.actionTime);
 #endif
+            string oldActionName = actionName;
 			actionName = "";
 			actionOtherObject = null;
+            if(onNewAction != null) onNewAction(oldActionName, "");
 		}
 		
 		#endregion
