@@ -86,11 +86,11 @@ namespace TingTing
 						logger.Log("Triggering action '" + actionName + "' at time " + _tingRunner.gameClock);
 					}
 					else {
-						logger.Log("Triggering action '" + actionName + "' with other ting '" + actionOtherObject.name + "' at time " + _tingRunner.gameClock);
+                        logger.Log("Triggering action '" + actionName + "' with other ting '" + actionOtherObject.name + "' at time " + _tingRunner.gameClock);
 					}
 #endif
+                    actionHasFired = true;
 					ActionTriggered(actionOtherObject);
-					actionHasFired = true;
 				}
 				if(pTime > actionEndTime) {
 #if DEBUG
@@ -200,6 +200,9 @@ namespace TingTing
 			}
 		}
 					
+        /// <summary>
+        /// Gets the tile under the Ting. Can return null if the position of the Ting is outside the tile grid.
+        /// </summary>
         public PointTileNode tile
         {
             get { return room.GetTile(localPoint); }
@@ -305,6 +308,7 @@ namespace TingTing
 			}
 		}
 		
+        [ShowInEditor]
 		public Ting actionOtherObject {
 			get
             {
@@ -358,6 +362,20 @@ namespace TingTing
 				return "Use [NAME]";
 			}
 		}
+
+        [ShowInEditor]
+        public float actionPercentage {
+            get {
+                //D.Log("pTime: " + _tingRunner.actionTime + ", actionStartTime: " + actionStartTime + ", actionEndTime: " + actionEndTime);
+
+                float answer = (_tingRunner.actionTime - actionStartTime) / (actionEndTime - actionStartTime);
+                if (answer < 0f)
+                    answer = 0f;
+                if (answer > 1f)
+                    answer = 1f;
+                return answer;
+            }
+        }
 		
         protected GameTime gameClock { get { return _tingRunner.gameClock; } }
 		
