@@ -12,7 +12,6 @@ namespace TingTing
     {
         TableTwo _roomTable;
         List<Room> _rooms;
-        PathSolver<PointTileNode> _pathSolver = new PathSolver<PointTileNode>();
      
         public RoomRunner(RelayTwo pRelay)
         {
@@ -73,13 +72,6 @@ namespace TingTing
             }
         }
      
-        public Path<PointTileNode> FindPath(WorldCoordinate pStart, WorldCoordinate pEnd)
-        { 
-            TileNode start = GetRoom(pStart.roomName).GetTile(pStart.localPosition);
-            TileNode end = GetRoom(pEnd.roomName).GetTile(pEnd.localPosition);
-            return _pathSolver.FindPath(start, end, this);
-        }
-
         #region IPreloadable Members
 
         public IEnumerable<string> Preload()

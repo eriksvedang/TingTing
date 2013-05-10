@@ -164,6 +164,7 @@ namespace TingTing
             return GetTile(pPoint.x, pPoint.y);
         }
 
+        /// <returns>Can return null if there is no tile at the position!</returns>
         public PointTileNode GetTile(int x, int y)
         {
             // Console.WriteLine("x" + x + ", y" + y);
