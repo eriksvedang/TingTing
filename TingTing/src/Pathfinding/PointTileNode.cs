@@ -112,6 +112,19 @@ namespace TingTing
         {
             return (_occupants != null) && (_occupants.Count > 0);
         }
+
+        public bool HasOccupants(Ting pIgnoreThisTing)
+        {
+            if (_occupants == null) {
+                return false;
+            } else if (_occupants.Count == 0) {
+                return false;
+            } else if (_occupants.Count == 1) {
+                return (_occupants[0] != pIgnoreThisTing);
+            } else {
+                return true;
+            }
+        }
      
         public Ting[] GetOccupants()
         {

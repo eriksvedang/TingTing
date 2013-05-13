@@ -4,6 +4,7 @@ using System.Diagnostics;
 using RelayLib;
 using GameTypes;
 using System.Runtime.CompilerServices;
+using System.Text;
 
 namespace TingTing
 {
@@ -373,7 +374,35 @@ namespace TingTing
             }
             return tile.HasOccupants();
         }
+
+        public bool AnotherTingSharesTheTile()
+        {
+            if (room == null) {
+                D.Log("Room of " + name + " is null, can't check for occupants.");
+                return false;
+            }
+            if (this.tile == null) {
+                D.Log("Tile at self position is null, can't check for occupants.");
+                return false;
+            }
+            return this.tile.HasOccupants(this);
+        }
 		
+        [ShowInEditor]
+        public string occupantsOnTile {
+            get {
+                if (tile == null) {
+                    return "Not on a tile";
+                }
+                Ting[] occupants = tile.GetOccupants();
+                List<string> occupantNames = new List<string>();
+                foreach (var occupant in occupants) {
+                    occupantNames.Add(occupant.name);
+                }
+                return string.Join(",", occupantNames.ToArray());
+            }
+        }
+
 		public virtual string tooltipName
 		{
 			get {
