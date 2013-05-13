@@ -78,7 +78,7 @@ namespace TingTing
             _tilesByLocalPositionHash.Clear();
             foreach (IntPoint t in pPoints) {
                 PointTileNode newNode = new PointTileNode(t, this);
-                _tilesByLocalPositionHash.Add(newNode.localPoint.GetHashCode(), newNode);
+                _tilesByLocalPositionHash[newNode.localPoint.GetHashCode()] = newNode; // used to be Add() so that duplicate keys would throw an exception, now it just overwrites
             }
             ApplyTileData();
             UpdateBounds();
