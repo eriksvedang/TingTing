@@ -173,6 +173,27 @@ namespace TingTing
             return t;
         }
 
+        private float ManhattanDistance(IntPoint pPosition1, IntPoint pPosition2)
+        {
+            return Math.Abs(pPosition1.x - pPosition2.x) + Math.Abs(pPosition1.y - pPosition2.y);
+        }
+
+        public PointTileNode FindClosestTile (IntPoint pPosition)
+        {
+            PointTileNode closest = null;
+            float smallestManhattanDistance = float.MaxValue;
+
+            foreach(var tile in _tilesByLocalPositionHash.Values) {
+                float distance = ManhattanDistance(pPosition, tile.localPoint);
+                if(distance < smallestManhattanDistance) {
+                    closest = tile;
+                    smallestManhattanDistance = distance;
+                }
+            }
+
+            return closest;
+        }
+
         public IntPoint WorldToLocalPoint(IntPoint pSource)
         {
             return pSource - worldPosition;
