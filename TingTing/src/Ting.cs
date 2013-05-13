@@ -348,6 +348,31 @@ namespace TingTing
 				};
 			}
         }
+
+        [ShowInEditor]
+        public virtual bool isBeingUsed {
+            get {
+                return false;
+            }
+        }
+
+        public bool AtLeastOneInteractionPointIsOccupied()
+        {
+            if (room == null) {
+                D.Log("Room of " + name + " is null, can't check for occupied interaction points.");
+                return false;
+            }
+            if (interactionPoints.Length == 0) {
+                D.Log("Length of interactionPoints[] " + name + " is 0, can't check for occupied interaction points.");
+                return false;
+            }
+            PointTileNode tile = room.GetTile(interactionPoints[0]);
+            if (tile == null) {
+                D.Log("No tile at interaction point, can't check for occupied interaction points.");
+                return false;
+            }
+            return tile.HasOccupants();
+        }
 		
 		public virtual string tooltipName
 		{
