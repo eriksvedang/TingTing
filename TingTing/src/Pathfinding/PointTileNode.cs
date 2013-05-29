@@ -125,6 +125,21 @@ namespace TingTing
                 return true;
             }
         }
+
+        public bool HasOccupantsButIgnoreSomeTypes(Type[] pTypesToIgnore)
+        {
+            if (_occupants == null || _occupants.Count == 0) {
+                return false;
+            }
+
+            foreach (var occupant in _occupants) {
+                if(!pTypesToIgnore.Contains(occupant.GetType())) {
+                    return true;
+                }
+            }
+
+            return false;
+        }
      
         public Ting[] GetOccupants()
         {
