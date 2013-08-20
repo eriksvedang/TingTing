@@ -384,7 +384,7 @@ namespace TingTing
                 return false;
             }
             if (this.tile == null) {
-                D.Log("Tile at self position is null, can't check for occupants.");
+                D.Log(name + ": Tile at self position is null, can't check for occupants.");
                 return false;
             }
             return this.tile.HasOccupants(this);
