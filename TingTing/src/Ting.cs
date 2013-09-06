@@ -39,6 +39,8 @@ namespace TingTing
         #endregion
 		
         public virtual void Update(float dt) {}
+        
+        public virtual void FixBeforeSaving() {} // this function can be used to fix things about the ting based on its properties, to make certain automatic adjustments (helps when editing levels)
 		
 		#region CELLS
 		
@@ -164,6 +166,8 @@ namespace TingTing
 			}
             set 
             {
+                //logger.Log("Position of " + name + " is being set to " + value);
+                
                 if (!_roomRunner.HasRoom(value.roomName))
                 {
                     throw new WorldCoordinateException("Can't place a ting in a undefined room: " + value.roomName);
