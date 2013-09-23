@@ -22,8 +22,10 @@ namespace TingTing
 
         public override string ToString()
         {
-            return string.Format("[TileNode: localPosition={0}, worldPosition={1}, room={2}, isStartNode={3}, isGoalNode={4}, visited={5}]",
-                               localPoint, worldPoint, room.name, isStartNode, isGoalNode, visited);
+            //return string.Format("[TileNode: localPosition={0}, worldPosition={1}, room={2}, isStartNode={3}, isGoalNode={4}, visited={5}]",
+            //                   localPoint, worldPoint, room.name, isStartNode, isGoalNode, visited);
+
+            return string.Format("[{2} ({0}, {1})]", localPoint.x, localPoint.y, room.name);
         }
 
         public WorldCoordinate position {

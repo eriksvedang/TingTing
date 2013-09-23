@@ -136,6 +136,11 @@ namespace TingTing
 		#endregion
 		
 		#region ACCESSORS
+
+        public override string ToString()
+        {
+            return name;
+        }
 		
 		public string name {
 			get {
