@@ -1,4 +1,4 @@
-//#DEFINE LOG_ACTIONS
+#define LOG_ACTIONS
 
 using System;
 using System.Collections.Generic;
@@ -109,7 +109,7 @@ namespace TingTing
 		public void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
 		{
 			string oldAction = actionName;
-#if DEBUG && LOG_ACTIONS
+#if LOG_ACTIONS
 			logger.Log("Starting action '" + pActionName + "' at time " + _tingRunner.gameClock);
 #endif
 			actionName = pActionName;
