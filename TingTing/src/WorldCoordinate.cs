@@ -64,7 +64,7 @@ namespace TingTing
 
         public override string ToString()
         {
-            return "Room: " + roomName + ", pos: " + localPosition;
+            return "[" + roomName + " " + localPosition + "]";
         }
     }
 }
