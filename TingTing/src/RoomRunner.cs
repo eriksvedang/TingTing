@@ -35,7 +35,18 @@ namespace TingTing
      
         public Room GetRoom(string pName)
         {
-            Room r = _rooms.Find(o => o.name == pName);
+            // Unfortunately this seems like it generates a lot of garbage :(
+            //Room r = _rooms.Find(o => o.name == pName);
+
+            Room r = null;
+
+            foreach (Room room in _rooms) {
+                if (room.name == pName) {
+                    r = room;
+                    break;
+                }
+            }
+
             if (r != null) {
                 return r;
             }
