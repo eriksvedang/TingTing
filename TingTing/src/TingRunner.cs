@@ -11,6 +11,9 @@ namespace TingTing
     {
         public GameTime gameClock { get; private set; }
         public float actionTime { get; private set; }
+        
+        public delegate void OnNewRoom(Ting pTing, string pNewRoomName);
+        public OnNewRoom onTingHasNewRoom;
 
         protected Dictionary<string,  Ting> _tings = new  Dictionary<string, Ting>();
         protected RoomRunner _roomRunner = null;

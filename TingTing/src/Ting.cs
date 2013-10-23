@@ -109,7 +109,7 @@ namespace TingTing
 		public void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
 		{
 			string oldAction = actionName;
-#if LOG_ACTIONS
+#if DEBUG && LOG_ACTIONS
 			logger.Log("Starting action '" + pActionName + "' at time " + _tingRunner.gameClock);
 #endif
 			actionName = pActionName;
@@ -173,16 +173,25 @@ namespace TingTing
             {
                 //logger.Log("Position of " + name + " is being set to " + value);
                 
+                string prevRoomName = CELL_position.data.roomName;
+                
+#if DEBUG
                 if (!_roomRunner.HasRoom(value.roomName))
                 {
                     throw new WorldCoordinateException("Can't place a ting in a undefined room: " + value.roomName);
                 }
+#endif
 				
 				if(_isOccupyingTile) {
 					DisconnectFromCurrentTile();
 				}
+                
 				CELL_position.data = value; 
 				ConnectToCurrentTile();
+                
+                if(prevRoomName != CELL_position.data.roomName && _tingRunner.onTingHasNewRoom != null) {
+                    _tingRunner.onTingHasNewRoom(this, value.roomName);
+                }
             }
         }
 
