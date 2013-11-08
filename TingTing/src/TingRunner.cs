@@ -169,6 +169,11 @@ namespace TingTing
 
         public TingType[] GetTingsOfTypeInRoom<TingType>(string pRoomName) where TingType : Ting
         {
+#if DEBUG
+            if(!_roomRunner.HasRoom(pRoomName)) {
+                throw new Exception("Can't find room with name " + pRoomName);
+            }
+#endif
             List<TingType> tingsInRoomOfType = new List<TingType>();
             foreach (Ting t in _tings.Values) {
                 if (t is TingType && t.position.roomName == pRoomName) {

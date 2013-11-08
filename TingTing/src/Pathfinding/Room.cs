@@ -1,3 +1,5 @@
+//#define LOG
+
 using System;
 using RelayLib;
 using GameTypes;
@@ -75,6 +77,10 @@ namespace TingTing
 
         public void SetTiles(IList<IntPoint> pPoints)
         {
+            #if DEBUG && LOG
+            Console.WriteLine("Called Room.SetTiles() WARNING, this is really slow. Callstack: " + Environment.StackTrace);
+            #endif
+
             _tilesByLocalPositionHash.Clear();
             foreach (IntPoint t in pPoints) {
                 PointTileNode newNode = new PointTileNode(t, this);
@@ -89,6 +95,10 @@ namespace TingTing
         /// </summary>
         public void ApplyTileData()
         {
+            #if DEBUG && LOG
+            Console.WriteLine("Called Room.ApplyTileData() WARNING, this is SUPER SLOW. Callstack: " + Environment.StackTrace);
+            #endif
+
             CELL_tiles.data = (from PointTileNode n in _tilesByLocalPositionHash.Values select n.localPoint).ToArray();
         }
 
@@ -120,8 +130,8 @@ namespace TingTing
 
         public void AddTile(PointTileNode pTileNode)
         {
-#if DEBUG
-            //Console.WriteLine("Called Room.AddTile() Warning, this is slow"); //. Callstack: " + Environment.StackTrace);
+#if DEBUG && LOG
+            Console.WriteLine("Called Room.AddTile() Warning, this is slow. Callstack: " + Environment.StackTrace);
 #endif
             try {
                 _tilesByLocalPositionHash.Add(pTileNode.localPoint.GetHashCode(), pTileNode);
