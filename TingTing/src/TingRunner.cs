@@ -81,7 +81,7 @@ namespace TingTing
             return pRelay.tables[tableName];
         }
 
-        protected T CreateTingWithoutAddingItToList<T>(string pName, WorldCoordinate pPosition, Direction pDirection) where T : Ting
+        protected T CreateTingWithoutAddingItToList<T>(string pName, WorldCoordinate pPosition, Direction pDirection, string pPrefabName) where T : Ting
         {
             Type t = typeof(T);
             TableTwo table = AssertTable(t, _relay);
@@ -93,12 +93,23 @@ namespace TingTing
             newTing.SetupBaseRunners(this, _roomRunner);
             newTing.SetInitCreateValues(pName, pPosition, pDirection);
             newTing.CreateNewRelayEntry(table, t.Name);
+            newTing.prefab = pPrefabName;
+            if(onTingHasNewRoom != null) {
+                onTingHasNewRoom(newTing, newTing.position.roomName);
+            }
             return newTing;
         }
      
         public virtual T CreateTing<T>(string pName, WorldCoordinate pPosition, Direction pDirection) where T : Ting
         {
-            T newTing = CreateTingWithoutAddingItToList<T>(pName, pPosition, pDirection);
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pPosition, pDirection, "");
+            AddTing(newTing);
+            return newTing;
+        }
+        
+        public virtual T CreateTing<T>(string pName, WorldCoordinate pPosition, Direction pDirection, string pPrefabName) where T : Ting
+        {
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pPosition, pDirection, pPrefabName);
             AddTing(newTing);
             return newTing;
         }
@@ -111,7 +122,7 @@ namespace TingTing
 
         public virtual T CreateTingAfterUpdate<T>(string pName, WorldCoordinate pWorldCoordinate, Direction pDirection) where T : Ting
         {
-            T newTing = CreateTingWithoutAddingItToList<T>(pName, pWorldCoordinate, pDirection);
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pWorldCoordinate, pDirection, "");
             _tingsToAddAfterUpdate.Add(newTing);
             return newTing;
         }
