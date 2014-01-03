@@ -15,89 +15,107 @@ namespace TingTing
 		public static readonly string TABLE_NAME = "Ting_Base";
 		public Logger logger = new Logger();
 		protected TingRunner _tingRunner;
-        protected RoomRunner _roomRunner;
+		protected RoomRunner _roomRunner;
 		private bool _isOccupyingTile = false;
-        public bool isDeleted { get; set; }
-		
-		public delegate void OnNewAction(string pOldAction, string pNewAction);
+
+		public bool isDeleted { get; set; }
+
+		public delegate void OnNewAction(string pOldAction,string pNewAction);
+
 		public OnNewAction onNewAction;
-		
-        #region PRE_TING_CREATION
-        /// <summary>
-        /// When a new Ting is created we need to have it created at the correct starting position,
-        /// otherwise the SetupCells can't resolve their appropriate room, (used functionality in subclass Door).
-        /// </summary>
-        private WorldCoordinate _startingPosition = WorldCoordinate.NONE;
-        private Direction _startingDirection = Direction.RIGHT;
-		private string _startingName = "unnamed";		
-        internal void SetInitCreateValues(string pName, WorldCoordinate pPosition, Direction pDirection)
-        {
+
+		#region PRE_TING_CREATION
+
+		/// <summary>
+		/// When a new Ting is created we need to have it created at the correct starting position,
+		/// otherwise the SetupCells can't resolve their appropriate room, (used functionality in subclass Door).
+		/// </summary>
+		private WorldCoordinate _startingPosition = WorldCoordinate.NONE;
+		private Direction _startingDirection = Direction.RIGHT;
+		private string _startingName = "unnamed";
+
+		internal void SetInitCreateValues(string pName, WorldCoordinate pPosition, Direction pDirection)
+		{
 			_startingName = pName;
-            _startingPosition = pPosition;
+			_startingPosition = pPosition;
 			_startingDirection = pDirection;
-        }
-        #endregion
-		
-        public virtual void Update(float dt) {}
-        
-        public virtual void FixBeforeSaving() {} // this function can be used to fix things about the ting based on its properties, to make certain automatic adjustments (helps when editing levels)
-		
+		}
+
+		#endregion
+
+		public virtual void Update(float dt)
+		{
+		}
+
+		public virtual void FixBeforeSaving()
+		{
+		}
+		// this function can be used to fix things about the ting based on its properties, to make certain automatic adjustments (helps when editing levels)
+
 		#region CELLS
-		
+
 		ValueEntry<string> CELL_name;
-        ValueEntry<WorldCoordinate> CELL_position;
-        ValueEntry<Direction> CELL_direction;
-        ValueEntry<string> CELL_dialogueLine;
-        ValueEntry<string> CELL_actionName;
-        ValueEntry<bool> CELL_actionHasFired;
-        ValueEntry<float> CELL_actionStartTime;
-        ValueEntry<float> CELL_actionTriggerTime;
-        ValueEntry<float> CELL_actionEndTime;
-        ValueEntry<string> CELL_actionOtherObjectName;
+		ValueEntry<WorldCoordinate> CELL_position;
+		ValueEntry<Direction> CELL_direction;
+		ValueEntry<string> CELL_dialogueLine;
+		ValueEntry<string> CELL_actionName;
+		ValueEntry<bool> CELL_actionHasFired;
+		ValueEntry<float> CELL_actionStartTime;
+		ValueEntry<float> CELL_actionTriggerTime;
+		ValueEntry<float> CELL_actionEndTime;
+		ValueEntry<string> CELL_actionOtherObjectName;
 		ValueEntry<string> CELL_prefab;
 		ValueEntry<bool> CELL_isBeingHeld;
-		
+
 		protected override void SetupCells()
-        {
+		{
 			CELL_name = EnsureCell("name", _startingName);
-            CELL_position = EnsureCell("position", _startingPosition);
-            CELL_direction = EnsureCell("direction", _startingDirection);
-            CELL_dialogueLine = EnsureCell("dialogueLine", "");
-            CELL_actionName = EnsureCell("action", "");
-            CELL_actionHasFired = EnsureCell("actionHasFired", false);
-            CELL_actionStartTime = EnsureCell("startTime", 0f);
-            CELL_actionTriggerTime = EnsureCell("triggerTime", 0f);
-            CELL_actionEndTime = EnsureCell("endTime", 0f);
-            CELL_actionOtherObjectName = EnsureCell("otherObjectName", "");
+			CELL_position = EnsureCell("position", _startingPosition);
+			CELL_direction = EnsureCell("direction", _startingDirection);
+			CELL_dialogueLine = EnsureCell("dialogueLine", "");
+			CELL_actionName = EnsureCell("action", "");
+			CELL_actionHasFired = EnsureCell("actionHasFired", false);
+			CELL_actionStartTime = EnsureCell("startTime", 0f);
+			CELL_actionTriggerTime = EnsureCell("triggerTime", 0f);
+			CELL_actionEndTime = EnsureCell("endTime", 0f);
+			CELL_actionOtherObjectName = EnsureCell("otherObjectName", "");
 			CELL_prefab = EnsureCell("prefab", "unspecified");
 			CELL_isBeingHeld = EnsureCell("isBeingHeld", false);
 		}
-	
+
 		#endregion
-		
+
 		#region ACTIONS
 
-		public virtual bool CanInteractWith(Ting pTingToInteractWith) { return false; }
-		public virtual void InteractWith(Ting pTingToInteractWith) { throw new NotImplementedException(); }
-		protected virtual void ActionTriggered(Ting pOtherTing) {}
-		
+		public virtual bool CanInteractWith(Ting pTingToInteractWith)
+		{
+			return false;
+		}
+
+		public virtual void InteractWith(Ting pTingToInteractWith)
+		{
+			throw new NotImplementedException();
+		}
+
+		protected virtual void ActionTriggered(Ting pOtherTing)
+		{
+		}
+
 		public void UpdateAction(float pTime)
 		{
-			if(actionName != "")
-			{
-				if(!actionHasFired && pTime >= actionTriggerTime) {
+			if (actionName != "") {
+				if (!actionHasFired && pTime >= actionTriggerTime) {
 #if DEBUG
-					if(actionOtherObject == null) {
+					if (actionOtherObject == null) {
 						logger.Log("Triggering action '" + actionName + "' at time " + _tingRunner.gameClock);
-					}
-					else {
-                        logger.Log("Triggering action '" + actionName + "' with other ting '" + actionOtherObject.name + "' at time " + _tingRunner.gameClock);
+					} else {
+						logger.Log("Triggering action '" + actionName + "' with other ting '" + actionOtherObject.name + "' at time " + _tingRunner.gameClock);
 					}
 #endif
-                    actionHasFired = true;
+					actionHasFired = true;
 					ActionTriggered(actionOtherObject);
 				}
-				if(pTime > actionEndTime) {
+				if (pTime > actionEndTime) {
 #if DEBUG
 					logger.Log("pTime (" + pTime + ") > actionEndTime (" + actionEndTime + ")");
 #endif
@@ -105,7 +123,7 @@ namespace TingTing
 				}
 			}
 		}
-		
+
 		public void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
 		{
 			string oldAction = actionName;
@@ -113,35 +131,37 @@ namespace TingTing
 			logger.Log("Starting action '" + pActionName + "' at time " + _tingRunner.gameClock);
 #endif
 			actionName = pActionName;
-            float aStartTime = _tingRunner.actionTime;
+			float aStartTime = _tingRunner.actionTime;
 			actionStartTime = aStartTime;
 			actionEndTime = aStartTime + pActionLength;
 			actionTriggerTime = aStartTime + pLengthUntilTrigger;
 			actionHasFired = false;
 			actionOtherObject = pOtherObject;
-			if(onNewAction != null) onNewAction(oldAction, pActionName);
+			if (onNewAction != null)
+				onNewAction(oldAction, pActionName);
 		}
-		
+
 		public void StopAction()
 		{
 #if DEBUG && LOG_ACTIONS
 			logger.Log("Stopping action '" + actionName + "' at time " + _tingRunner.actionTime);
 #endif
-            string oldActionName = actionName;
+			string oldActionName = actionName;
 			actionName = "";
 			actionOtherObject = null;
-            if(onNewAction != null) onNewAction(oldActionName, "");
+			if (onNewAction != null)
+				onNewAction(oldActionName, "");
 		}
-		
+
 		#endregion
-		
+
 		#region ACCESSORS
 
-        public override string ToString()
-        {
-            return name;
-        }
-		
+		public override string ToString()
+		{
+			return name;
+		}
+
 		public string name {
 			get {
 				return CELL_name.data;
@@ -151,49 +171,46 @@ namespace TingTing
 			}
 		}
 
-        public bool HasInteractionPointHere(WorldCoordinate finalTargetPosition)
-        {
-            if(room.name == finalTargetPosition.roomName) {
-                foreach(IntPoint pos in interactionPoints) {
-                    if(finalTargetPosition.localPosition == pos) {
-                        return true;
-                    }
-                }
-            }
-            return false;
-        }
-		
-        [ShowInEditor]
-        public WorldCoordinate position
-        {
-            get { 
+		public bool HasInteractionPointHere(WorldCoordinate finalTargetPosition)
+		{
+			if (room.name == finalTargetPosition.roomName) {
+				foreach (IntPoint pos in interactionPoints) {
+					if (finalTargetPosition.localPosition == pos) {
+						return true;
+					}
+				}
+			}
+			return false;
+		}
+
+		[ShowInEditor]
+		public WorldCoordinate position {
+			get { 
 				return CELL_position.data; 
 			}
-            set 
-            {
-                //logger.Log("Position of " + name + " is being set to " + value);
+			set {
+				//logger.Log("Position of " + name + " is being set to " + value);
                 
-                string prevRoomName = CELL_position.data.roomName;
+				string prevRoomName = CELL_position.data.roomName;
                 
 #if DEBUG
-                if (!_roomRunner.HasRoom(value.roomName))
-                {
-                    throw new WorldCoordinateException("Can't place a ting in a undefined room: " + value.roomName);
-                }
+				if (!_roomRunner.HasRoom(value.roomName)) {
+					throw new WorldCoordinateException("Can't place a ting in a undefined room: " + value.roomName);
+				}
 #endif
 				
-				if(_isOccupyingTile) {
+				if (_isOccupyingTile) {
 					DisconnectFromCurrentTile();
 				}
                 
 				CELL_position.data = value; 
 				ConnectToCurrentTile();
                 
-                if(prevRoomName != CELL_position.data.roomName && _tingRunner.onTingHasNewRoom != null) {
-                    _tingRunner.onTingHasNewRoom(this, value.roomName);
-                }
-            }
-        }
+				if (prevRoomName != CELL_position.data.roomName && _tingRunner.onTingHasNewRoom != null) {
+					_tingRunner.onTingHasNewRoom(this, value.roomName);
+				}
+			}
+		}
 
 		protected void DisconnectFromCurrentTile()
 		{
@@ -205,40 +222,35 @@ namespace TingTing
 		{
 			D.isNull(room, "room is null");
 			PointTileNode tile = room.GetTile(position.localPosition);
-			if(tile == null) {
+			if (tile == null) {
 				//D.Log("Found no tile for Ting " + name);
-			}
-			else {
+			} else {
 				tile.AddOccupant(this);
 				_isOccupyingTile = true;
 			}
 		}
 
-		public Room room
-        {
+		public Room room {
 			get {
-                return _roomRunner.GetRoom(CELL_position.data.roomName);
+				return _roomRunner.GetRoom(CELL_position.data.roomName);
 			}
 		}
-					
-        /// <summary>
-        /// Gets the tile under the Ting. Can return null if the position of the Ting is outside the tile grid.
-        /// </summary>
-        public PointTileNode tile
-        {
-            get { return room.GetTile(localPoint); }
-        }
-		
-		public IntPoint localPoint
-        {
+
+		/// <summary>
+		/// Gets the tile under the Ting. Can return null if the position of the Ting is outside the tile grid.
+		/// </summary>
+		public PointTileNode tile {
+			get { return room.GetTile(localPoint); }
+		}
+
+		public IntPoint localPoint {
 			get { return CELL_position.data.localPosition; }
 		}
-		
-        public IntPoint worldPoint
-        {
-            get { return room.worldPosition + this.localPoint; }
-        }
-		
+
+		public IntPoint worldPoint {
+			get { return room.worldPosition + this.localPoint; }
+		}
+
 		[ShowInEditor]
 		public Direction direction {
 			get {
@@ -248,7 +260,7 @@ namespace TingTing
 				CELL_direction.data = value;
 			}
 		}
-		
+
 		[ShowInEditor]
 		public string dialogueLine {
 			get {
@@ -258,7 +270,7 @@ namespace TingTing
 				CELL_dialogueLine.data = value;
 			}
 		}
-		
+
 		[EditableInEditor]
 		public string actionName {
 			get {
@@ -268,7 +280,7 @@ namespace TingTing
 				CELL_actionName.data = value;
 			}
 		}
-		
+
 		[ShowInEditor]
 		public bool actionHasFired {
 			get {
@@ -278,27 +290,24 @@ namespace TingTing
 				CELL_actionHasFired.data = value;
 			}
 		}
-		
 		//[ShowInEditor]
 		public float actionStartTime {
 			get {
-                return CELL_actionStartTime.data;
+				return CELL_actionStartTime.data;
 			}
 			set {
 				CELL_actionStartTime.data = value;
 			}
 		}
-		
 		//[ShowInEditor]
 		public float actionTriggerTime {
 			get {
-                return CELL_actionTriggerTime.data;
+				return CELL_actionTriggerTime.data;
 			}
 			set {
 				CELL_actionTriggerTime.data = value;
 			}
 		}
-		
 		//[ShowInEditor]
 		public float actionEndTime {
 			get {
@@ -308,59 +317,57 @@ namespace TingTing
 				CELL_actionEndTime.data = value;
 			}
 		}
-		
+
 		[EditableInEditor]
 		public string prefab {
 			get {
-                return CELL_prefab.data;
+				return CELL_prefab.data;
 			}
 			set {
 				CELL_prefab.data = value;
 			}
 		}
-			
+
 		[ShowInEditor]
 		public bool isBeingHeld {
 			get {
-                return CELL_isBeingHeld.data;
+				return CELL_isBeingHeld.data;
 			}
 			set {
 				CELL_isBeingHeld.data = value;
 			}
 		}
-		
-        [ShowInEditor]
+
+		[ShowInEditor]
 		public Ting actionOtherObject {
-			get
-            {
-				if(CELL_actionOtherObjectName.data == "") 
+			get {
+				if (CELL_actionOtherObjectName.data == "")
 					return null;
 				else
-                    return _tingRunner.GetTing(CELL_actionOtherObjectName.data);
+					return _tingRunner.GetTing(CELL_actionOtherObjectName.data);
 			}
-			set
-            {
-                if (value == null)
-                    CELL_actionOtherObjectName.data = "";
-                else
-                    CELL_actionOtherObjectName.data = value.name;
+			set {
+				if (value == null)
+					CELL_actionOtherObjectName.data = "";
+				else
+					CELL_actionOtherObjectName.data = value.name;
 			}
 		}
-		
+
 		internal void SetupBaseRunners(TingRunner pTingRunner, RoomRunner pRoomRunner)
 		{
-            _roomRunner = pRoomRunner;
+			_roomRunner = pRoomRunner;
 			_tingRunner = pTingRunner;
 		}
-		
+
 		public virtual bool canBePickedUp {
 			get {
 				return false;
 			}
 		}
-		
+
 		public virtual IntPoint[] interactionPoints {
-            get {
+			get {
 				return new IntPoint[] { 
 					localPoint + IntPoint.Down, 
 					localPoint + IntPoint.Up, 
@@ -368,91 +375,90 @@ namespace TingTing
 					localPoint + IntPoint.Right
 				};
 			}
-        }
+		}
 
-        [ShowInEditor]
-        public virtual bool isBeingUsed {
-            get {
-                return false;
-            }
-        }
+		[ShowInEditor]
+		public virtual bool isBeingUsed {
+			get {
+				return false;
+			}
+		}
 
-        public bool AtLeastOneInteractionPointIsOccupied()
-        {
-            if (room == null) {
-                D.Log("Room of " + name + " is null, can't check for occupied interaction points.");
-                return false;
-            }
-            if (interactionPoints.Length == 0) {
-                D.Log("Length of interactionPoints[] " + name + " is 0, can't check for occupied interaction points.");
-                return false;
-            }
-            PointTileNode tile = room.GetTile(interactionPoints[0]);
-            if (tile == null) {
-                D.Log("No tile at interaction point, can't check for occupied interaction points.");
-                return false;
-            }
-            return tile.HasOccupants();
-        }
-
-        public bool AnotherTingSharesTheTile()
-        {
-            if (room == null) {
-                D.Log("Room of " + name + " is null, can't check for occupants.");
-                return false;
-            }
-            if (this.tile == null) {
-                D.Log(name + ": Tile at self position is null, can't check for occupants.");
-                return false;
-            }
-            return this.tile.HasOccupants(this);
-        }
-		
-        [ShowInEditor]
-        public string occupantsOnTile {
-            get {
-                if (tile == null) {
-                    return "Not on a tile";
-                }
-                Ting[] occupants = tile.GetOccupants();
-                List<string> occupantNames = new List<string>();
-                foreach (var occupant in occupants) {
-                    occupantNames.Add(occupant.name);
-                }
-                return string.Join(",", occupantNames.ToArray());
-            }
-        }
-
-		public virtual string tooltipName
+		public bool AtLeastOneInteractionPointIsOccupied()
 		{
+			if (room == null) {
+				D.Log("Room of " + name + " is null, can't check for occupied interaction points.");
+				return false;
+			}
+			if (interactionPoints.Length == 0) {
+				D.Log("Length of interactionPoints[] " + name + " is 0, can't check for occupied interaction points.");
+				return false;
+			}
+			PointTileNode tile = room.GetTile(interactionPoints[0]);
+			if (tile == null) {
+				D.Log("No tile at interaction point, can't check for occupied interaction points.");
+				return false;
+			}
+			return tile.HasOccupants();
+		}
+
+		public bool AnotherTingSharesTheTile()
+		{
+			if (room == null) {
+				D.Log("Room of " + name + " is null, can't check for occupants.");
+				return false;
+			}
+			if (this.tile == null) {
+				D.Log(name + ": Tile at self position is null, can't check for occupants.");
+				return false;
+			}
+			return this.tile.HasOccupants(this);
+		}
+
+		[ShowInEditor]
+		public string occupantsOnTile {
+			get {
+				if (tile == null) {
+					return "Not on a tile";
+				}
+				Ting[] occupants = tile.GetOccupants();
+				List<string> occupantNames = new List<string>();
+				foreach (var occupant in occupants) {
+					occupantNames.Add(occupant.name);
+				}
+				return string.Join(",", occupantNames.ToArray());
+			}
+		}
+
+		public virtual string tooltipName {
 			get {
 				return "Ting";
 			}
 		}
-		
-		public virtual string verbDescription
-		{
+
+		public virtual string verbDescription {
 			get {
 				return "Use [NAME]";
 			}
 		}
 
-        [ShowInEditor]
-        public float actionPercentage {
-            get {
-                //D.Log("pTime: " + _tingRunner.actionTime + ", actionStartTime: " + actionStartTime + ", actionEndTime: " + actionEndTime);
+		[ShowInEditor]
+		public float actionPercentage {
+			get {
+				//D.Log("pTime: " + _tingRunner.actionTime + ", actionStartTime: " + actionStartTime + ", actionEndTime: " + actionEndTime);
 
-                float answer = (_tingRunner.actionTime - actionStartTime) / (actionEndTime - actionStartTime);
-                if (answer < 0f)
-                    answer = 0f;
-                if (answer > 1f)
-                    answer = 1f;
-                return answer;
-            }
-        }
-		
-        protected GameTime gameClock { get { return _tingRunner.gameClock; } }
-		
+				float answer = (_tingRunner.actionTime - actionStartTime) / (actionEndTime - actionStartTime);
+				if (answer < 0f)
+					answer = 0f;
+				if (answer > 1f)
+					answer = 1f;
+				return answer;
+			}
+		}
+
+		protected GameTime gameClock { get { return _tingRunner.gameClock; } }
+
 		#endregion
+
 	}
 }
