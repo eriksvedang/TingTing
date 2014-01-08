@@ -441,6 +441,10 @@ namespace TingTing
 				return "Use [NAME]";
 			}
 		}
+        
+        public virtual string UseTingOnTingDescription(Ting pOtherTing) {
+            return "use " + tooltipName + " on " + pOtherTing.tooltipName;
+        }
 
 		[ShowInEditor]
 		public float actionPercentage {
