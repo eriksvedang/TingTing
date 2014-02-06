@@ -51,6 +51,55 @@ namespace TingTing
             RefreshTileData();
         }
 
+        public void SetupGroups()
+        {
+            var tiles = _tilesByLocalPositionHash.Values;
+            int groupId = 0;
+
+            foreach(var tile in tiles) {
+                if(tile.group != -1) {
+                    continue;
+                }
+
+                tile.group = groupId;
+
+                var neighbours = GetNeighbours(tile);
+                while(neighbours.Count > 0) {
+                    var newNeighbours = new List<PointTileNode>();
+                    foreach(var node in neighbours) {
+                        if(node.group != -1) continue;
+                        //Console.WriteLine("Setting " + node + " to group " + groupId);
+                        node.group = groupId;
+                        newNeighbours.AddRange(GetNeighbours(node));
+                    }
+                    neighbours = newNeighbours;
+                }
+
+                groupId++;
+            }
+        }
+
+        List<PointTileNode> GetNeighbours(PointTileNode pNode) {
+            var neighbours = new List<PointTileNode>();
+            foreach(var link in pNode.links) {
+                var newNode = link.GetOtherNode(pNode) as PointTileNode;
+                if(newNode.group == -1) {
+                   neighbours.Add(newNode);
+                }
+            }
+            return neighbours;
+        }
+
+        void RecursiveGroupSet(PointTileNode pNode, int pGroupId) {
+            if(pNode.group != -1) {
+                return;
+            }
+            pNode.group = pGroupId;
+            foreach(var link in pNode.links) {
+                RecursiveGroupSet(link.GetOtherNode(pNode) as PointTileNode, pGroupId);
+            }
+        }
+
         public string name {
             get {
                 return CELL_name.data;

@@ -15,9 +15,12 @@ namespace TingTing
         private List<Ting> _occupants;
         private PointTileNode _target = null;
 
+        public int group { get; set; }
+
         public PointTileNode(IntPoint pLocalPoint, Room r) : base(pLocalPoint)
         {
             room = r;
+            group = -1;
         }
 
         public override string ToString()
@@ -25,7 +28,7 @@ namespace TingTing
             //return string.Format("[TileNode: localPosition={0}, worldPosition={1}, room={2}, isStartNode={3}, isGoalNode={4}, visited={5}]",
             //                   localPoint, worldPoint, room.name, isStartNode, isGoalNode, visited);
 
-            return string.Format("[{2} ({0}, {1})]", localPoint.x, localPoint.y, room.name);
+            return string.Format("[{2} ({0}, {1}, group {3})]", localPoint.x, localPoint.y, room.name, group);
         }
 
         public WorldCoordinate position {

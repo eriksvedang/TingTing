@@ -93,8 +93,9 @@ namespace TingTing
         public IEnumerable<string> Preload()
         {
             foreach (Room r in _rooms) {
-                yield return "Setting up links in room " + r.name;
+                yield return "Setting up links and groups in room " + r.name;
                 r.SetupLinks();
+                r.SetupGroups();
             }
         }
 
