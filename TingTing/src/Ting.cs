@@ -137,8 +137,9 @@ namespace TingTing
 			actionTriggerTime = aStartTime + pLengthUntilTrigger;
 			actionHasFired = false;
 			actionOtherObject = pOtherObject;
-			if (onNewAction != null)
+			if (onNewAction != null) {
 				onNewAction(oldAction, pActionName);
+            }
 		}
 
 		public void StopAction()
