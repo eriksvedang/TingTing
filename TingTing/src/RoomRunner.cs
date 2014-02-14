@@ -11,13 +11,16 @@ namespace TingTing
     public class RoomRunner : IPathNetwork<PointTileNode>, IPreloadable
     {
         TableTwo _roomTable;
-        List<Room> _rooms;
+        Dictionary<string, Room> _rooms = new Dictionary<string, Room>();
      
         public RoomRunner(RelayTwo pRelay)
         {
             D.isNull(pRelay);
             _roomTable = pRelay.GetTable(Room.TABLE_NAME);
-            _rooms = InstantiatorTwo.Process<Room>(_roomTable);
+            var rooms = InstantiatorTwo.Process<Room>(_roomTable);
+            foreach(var room in rooms) {
+                _rooms.Add(room.name, room);
+            }
         }
      
         public T CreateRoom<T>(string pName) where T : Room
@@ -29,7 +32,7 @@ namespace TingTing
 #endif
             T newRoom = InstantiatorTwo.Create<T>(_roomTable);
             newRoom.name = pName;
-            _rooms.Add(newRoom);
+            _rooms.Add(pName, newRoom);
             return newRoom;
         }
      
@@ -40,12 +43,9 @@ namespace TingTing
 
             Room r = null;
 
-            foreach (Room room in _rooms) {
-                if (room.name == pName) {
-                    r = room;
-                    break;
-                }
-            }
+            _rooms.TryGetValue(pName, out r);
+
+            //return r;
 
             if (r != null) {
                 return r;
@@ -57,12 +57,12 @@ namespace TingTing
      
         public bool HasRoom(string pName)
         {
-            return (_rooms.Find(o => o.name == pName) != null);
+            return _rooms.ContainsKey(pName);
         }
      
         public IEnumerable<Room> rooms { 
             get { 
-                return _rooms; 
+                return _rooms.Values; 
             }
         }
      
@@ -71,12 +71,12 @@ namespace TingTing
             Room r = GetRoom(pName);
             int objectId = r.objectId;
             _roomTable.RemoveRowAt(objectId);
-            _rooms.Remove(r);
+            _rooms.Remove(pName);
         }
      
         public void Reset()
         {
-            foreach (Room room in _rooms) {
+            foreach (Room room in _rooms.Values) {
                 ResetRoom(room);
             }
         }
@@ -92,7 +92,7 @@ namespace TingTing
 
         public IEnumerable<string> Preload()
         {
-            foreach (Room r in _rooms) {
+            foreach (Room r in _rooms.Values) {
                 yield return "Setting up links and groups in room " + r.name;
                 r.SetupLinks();
                 r.SetupGroups();

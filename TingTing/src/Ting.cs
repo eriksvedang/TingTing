@@ -67,6 +67,9 @@ namespace TingTing
 		ValueEntry<string> CELL_prefab;
 		ValueEntry<bool> CELL_isBeingHeld;
 
+        protected bool _dialogueLineIsEmpty_Cache;
+        protected string _actionName_Cache;
+
 		protected override void SetupCells()
 		{
 			CELL_name = EnsureCell("name", _startingName);
@@ -81,6 +84,9 @@ namespace TingTing
 			CELL_actionOtherObjectName = EnsureCell("otherObjectName", "");
 			CELL_prefab = EnsureCell("prefab", "unspecified");
 			CELL_isBeingHeld = EnsureCell("isBeingHeld", false);
+
+            _dialogueLineIsEmpty_Cache = (CELL_dialogueLine.data == "");
+            _actionName_Cache = CELL_actionName.data;
 		}
 
 		#endregion
@@ -221,7 +227,8 @@ namespace TingTing
 
 		protected void ConnectToCurrentTile()
 		{
-			D.isNull(room, "room is null");
+			//D.isNull(room, "room is null");
+
 			PointTileNode tile = room.GetTile(position.localPosition);
 			if (tile == null) {
 				//D.Log("Found no tile for Ting " + name);
@@ -269,16 +276,19 @@ namespace TingTing
 			}
 			set {
 				CELL_dialogueLine.data = value;
+                _dialogueLineIsEmpty_Cache = (value == "");
 			}
 		}
 
 		[EditableInEditor]
 		public string actionName {
 			get {
-				return CELL_actionName.data;
+                return _actionName_Cache;
+				//return CELL_actionName.data;
 			}
 			set {
 				CELL_actionName.data = value;
+                _actionName_Cache = value;
 			}
 		}
 
