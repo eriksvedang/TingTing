@@ -120,9 +120,9 @@ namespace TingTing
             return CreateTing<T>(pName, pWorldCoordinate, Direction.RIGHT);
         }
 
-        public virtual T CreateTingAfterUpdate<T>(string pName, WorldCoordinate pWorldCoordinate, Direction pDirection) where T : Ting
+        public virtual T CreateTingAfterUpdate<T>(string pName, WorldCoordinate pWorldCoordinate, Direction pDirection, string pPrefabName) where T : Ting
         {
-            T newTing = CreateTingWithoutAddingItToList<T>(pName, pWorldCoordinate, pDirection, "");
+            T newTing = CreateTingWithoutAddingItToList<T>(pName, pWorldCoordinate, pDirection, pPrefabName);
             _tingsToAddAfterUpdate.Add(newTing);
             return newTing;
         }
