@@ -1,4 +1,4 @@
-//#define LOG_ACTIONS
+#define LOG_ACTIONS
 
 using System;
 using System.Collections.Generic;
@@ -151,7 +151,7 @@ namespace TingTing
 		public void StopAction()
 		{
 #if DEBUG && LOG_ACTIONS
-			logger.Log("Stopping action '" + actionName + "' at time " + _tingRunner.actionTime);
+			logger.Log("Stopping action '" + actionName + "' at time " + _tingRunner.gameClock);
 #endif
 			string oldActionName = actionName;
 			actionName = "";
