@@ -388,6 +388,12 @@ namespace TingTing
 			}
 		}
 
+        public virtual IntPoint[] interactionPointsTryTheseFirst {
+            get {
+                return null;
+            }
+        }
+
 		[ShowInEditor]
 		public virtual bool isBeingUsed {
 			get {
