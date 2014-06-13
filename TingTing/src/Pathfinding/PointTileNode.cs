@@ -131,6 +131,24 @@ namespace TingTing
             }
         }
 
+        public bool HasOccupants<T>(Ting pIgnoreThisTing)
+        {
+            if (_occupants == null || _occupants.Count == 0) {
+                return false;
+            }
+            
+            foreach (var occupant in _occupants) {
+                if(occupant == pIgnoreThisTing) {
+                    continue;
+                }
+                else if(occupant.GetType() == typeof(T)) {
+                    return true;
+                }
+            }
+            
+            return false;
+        }
+
         public bool HasOccupantsButIgnoreSomeTypes(Type[] pTypesToIgnore)
         {
             if (_occupants == null || _occupants.Count == 0) {
