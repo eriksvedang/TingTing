@@ -281,6 +281,22 @@ namespace TingTing
                 return CELL_worldPosition.data;
             }
         }
+
+        public List<Ting> GetTings() {
+            var tingsInRoom = new List<Ting>();
+            foreach (var tile in _tilesByLocalPositionHash.Values) {
+                tingsInRoom.AddRange(tile.GetOccupants());
+            }
+            return tingsInRoom;
+        }
+
+        public List<T> GetTingsOfType<T>() where T : Ting  {
+            var tingsInRoom = new List<T>();
+            foreach (var tile in _tilesByLocalPositionHash.Values) {
+                tingsInRoom.AddRange(tile.GetOccupantsOfType<T>());
+            }
+            return tingsInRoom;
+        }
     }
 }
 

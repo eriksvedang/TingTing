@@ -182,6 +182,14 @@ namespace TingTing
             }
             return null;
         }
+
+        public IEnumerable<T> GetOccupantsOfType<T>() where T : Ting
+        {
+            foreach (Ting t in GetOccupants()) {
+                if (t.GetType() == typeof(T))
+                    yield return t as T;
+            }
+        }
      
         private void EnsureOccapantList()
         {
