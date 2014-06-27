@@ -44,6 +44,11 @@ namespace TingTing
 
 		#endregion
 
+        public override int GetHashCode()
+        {
+            return CELL_name.data.GetHashCode();
+        }
+
 		public virtual void Update(float dt)
 		{
 		}
