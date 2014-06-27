@@ -1,4 +1,5 @@
 //#define LOG_ACTIONS
+#define CACHING
 
 using System;
 using System.Collections.Generic;
@@ -213,7 +214,9 @@ namespace TingTing
 				CELL_position.data = value; 
 				ConnectToCurrentTile();
 
+#if CACHING
                 SetCachedTile();
+#endif
                 
 				if (prevRoomName != CELL_position.data.roomName && _tingRunner.onTingHasNewRoom != null) {
 					_tingRunner.onTingHasNewRoom(this, value.roomName);
@@ -231,7 +234,9 @@ namespace TingTing
 		{
 			//D.isNull(room, "room is null");
 
+#if CACHING
             SetCachedRoom(); // got to update this!!!
+#endif
 
 			PointTileNode tile = room.GetTile(position.localPosition);
 			if (tile == null) {
@@ -244,31 +249,42 @@ namespace TingTing
 
 		public Room room {
 			get {
+#if CACHING
                 if (_cachedRoom == null) {
                     SetCachedRoom();
                 }
                 return _cachedRoom;
+#else
+                return _roomRunner.GetRoom(CELL_position.data.roomName);
+#endif
 			}
 		}
 
+#if CACHING
         Room _cachedRoom = null;
 
         void SetCachedRoom() {
             _cachedRoom = _roomRunner.GetRoom(CELL_position.data.roomName);
         }
+#endif
 
 		/// <summary>
 		/// Gets the tile under the Ting. Can return null if the position of the Ting is outside the tile grid.
 		/// </summary>
 		public PointTileNode tile {
-			get { 
+			get {
+#if CACHING
                 if (!_hasSetCachedTile) {
                     SetCachedTile();
                 }
                 return _cachedTile;
+#else 
+                return room.GetTile(localPoint);
+#endif
             }
 		}
 
+#if CACHING
         protected void SetCachedTile() {
             _cachedTile = room.GetTile(localPoint);
             _hasSetCachedTile = true;
@@ -276,6 +292,7 @@ namespace TingTing
 
         private PointTileNode _cachedTile = null;
         private bool _hasSetCachedTile = false;
+#endif
 
 		public IntPoint localPoint {
 			get { return CELL_position.data.localPosition; }
