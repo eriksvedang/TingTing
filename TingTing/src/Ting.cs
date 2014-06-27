@@ -212,6 +212,8 @@ namespace TingTing
                 
 				CELL_position.data = value; 
 				ConnectToCurrentTile();
+
+                SetCachedTile();
                 
 				if (prevRoomName != CELL_position.data.roomName && _tingRunner.onTingHasNewRoom != null) {
 					_tingRunner.onTingHasNewRoom(this, value.roomName);
@@ -229,6 +231,8 @@ namespace TingTing
 		{
 			//D.isNull(room, "room is null");
 
+            SetCachedRoom(); // got to update this!!!
+
 			PointTileNode tile = room.GetTile(position.localPosition);
 			if (tile == null) {
 				//D.Log("Found no tile for Ting " + name);
@@ -240,24 +244,51 @@ namespace TingTing
 
 		public Room room {
 			get {
-				return _roomRunner.GetRoom(CELL_position.data.roomName);
+                if (_cachedRoom == null) {
+                    SetCachedRoom();
+                }
+                return _cachedRoom;
 			}
 		}
+
+        Room _cachedRoom = null;
+
+        void SetCachedRoom() {
+            _cachedRoom = _roomRunner.GetRoom(CELL_position.data.roomName);
+        }
 
 		/// <summary>
 		/// Gets the tile under the Ting. Can return null if the position of the Ting is outside the tile grid.
 		/// </summary>
 		public PointTileNode tile {
-			get { return room.GetTile(localPoint); }
+			get { 
+                if (!_hasSetCachedTile) {
+                    SetCachedTile();
+                }
+                return _cachedTile;
+            }
 		}
+
+        protected void SetCachedTile() {
+            _cachedTile = room.GetTile(localPoint);
+            _hasSetCachedTile = true;
+        }
+
+        private PointTileNode _cachedTile = null;
+        private bool _hasSetCachedTile = false;
 
 		public IntPoint localPoint {
 			get { return CELL_position.data.localPosition; }
 		}
 
 		public IntPoint worldPoint {
-			get { return room.worldPosition + this.localPoint; }
+			get { 
+                return room.worldPosition + this.localPoint; 
+            }
 		}
+
+        IntPoint _worldPointCache = IntPoint.Zero;
+
 
 		[ShowInEditor]
 		public Direction direction {
