@@ -180,6 +180,7 @@ namespace TingTing
 
         public TingType[] GetTingsOfTypeInRoom<TingType>(string pRoomName) where TingType : Ting
         {
+            // TODO: This method is potentially very slow!!!
 #if DEBUG
             if(!_roomRunner.HasRoom(pRoomName)) {
                 throw new Exception("Can't find room with name " + pRoomName);
