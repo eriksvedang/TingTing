@@ -128,10 +128,6 @@ namespace TingTing
             }
         }
 
-        public IntPoint[] tilePoints {
-            get { return CELL_tiles.data; }
-        }
-
         public bool exterior {
             get {
                 return CELL_exterior.data;
@@ -424,12 +420,17 @@ namespace TingTing
             return pSource - worldPosition;
         }
 
+        IntPoint[] _tilePointsOptigridCache;
+
         public IntPoint[] points {
             get { 
                 if (optiGrid == "") {
                     return CELL_tiles.data;
                 } else {
-                    return _tilesByLocalPositionHash.Values.Select(t => t.localPoint).ToArray();
+                    if (_tilePointsOptigridCache == null) {
+                        _tilePointsOptigridCache = _tilesByLocalPositionHash.Values.Select(t => t.localPoint).ToArray();
+                    }
+                    return _tilePointsOptigridCache;
                 }
             }
         }
