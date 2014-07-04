@@ -394,6 +394,12 @@ namespace TingTing
             return t;
         }
 
+        public PointTileNode[] tiles {
+            get {
+                return _tilesByLocalPositionHash.Values.ToArray();
+            }
+        }
+
         private float ManhattanDistance(IntPoint pPosition1, IntPoint pPosition2)
         {
             return Math.Abs(pPosition1.x - pPosition2.x) + Math.Abs(pPosition1.y - pPosition2.y);
