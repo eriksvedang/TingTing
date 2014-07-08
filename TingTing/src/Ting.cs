@@ -475,11 +475,11 @@ namespace TingTing
 		public bool AnotherTingSharesTheTile()
 		{
 			if (room == null) {
-				D.Log("Room of " + name + " is null, can't check for occupants.");
+				//D.Log("Room of " + name + " is null, can't check for occupants.");
 				return false;
 			}
 			if (this.tile == null) {
-				D.Log(name + ": Tile at self position is null, can't check for occupants.");
+				//D.Log(name + ": Tile at self position is null, can't check for occupants.");
 				return false;
 			}
 			return this.tile.HasOccupants(this);
