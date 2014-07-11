@@ -117,7 +117,7 @@ namespace TingTing
 		{
 			if (actionName != "") {
 				if (!actionHasFired && pTime >= actionTriggerTime) {
-#if DEBUG
+#if DEBUG && LOG_ACTIONS
 					if (actionOtherObject == null) {
 						logger.Log("Triggering action '" + actionName + "' at time " + _tingRunner.gameClock);
 					} else {
@@ -128,7 +128,7 @@ namespace TingTing
 					ActionTriggered(actionOtherObject);
 				}
 				if (pTime > actionEndTime) {
-#if DEBUG
+#if DEBUG && LOG_ACTIONS
 					logger.Log("pTime (" + pTime + ") > actionEndTime (" + actionEndTime + ")");
 #endif
 					StopAction();

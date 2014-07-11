@@ -127,6 +127,7 @@ namespace TingTing
             } else if (_occupants.Count == 1) {
                 return (_occupants[0] != pIgnoreThisTing);
             } else {
+                //Console.WriteLine("Tile " + this.ToString() + " has " + _occupants.Count + " occupants:" + string.Join(", ", _occupants.Select(o => o.ToString()).ToArray()));
                 return true;
             }
         }
