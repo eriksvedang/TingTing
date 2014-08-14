@@ -472,6 +472,22 @@ namespace TingTing
 			return tile.HasOccupants();
 		}
 
+        public bool HasNoFreeInteractionPoints()
+        {
+            bool hasNoFreePoint = true;
+            foreach (var p in interactionPoints) {
+                var t = room.GetTile(p);
+                if (t == null) {
+                    continue;
+                }
+                else if (!t.HasOccupants()) {
+                    hasNoFreePoint = false;
+                    break;
+                }
+            }
+            return hasNoFreePoint;
+        }
+
 		public bool AnotherTingSharesTheTile()
 		{
 			if (room == null) {
