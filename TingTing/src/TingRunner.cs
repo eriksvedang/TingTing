@@ -133,8 +133,8 @@ namespace TingTing
         public Ting GetTing(string pName)
         {
             D.isNull(_tings);
-            Ting result;
-            if (_tings.TryGetValue(pName, out result)) {
+            Ting result = GetTingUnsafe(pName);
+            if (result != null) {
                 return result;
             }
             else {
@@ -154,7 +154,14 @@ namespace TingTing
         {
             Ting result;
             _tings.TryGetValue(pName, out result);
+            if (result == null) {
+                result = GetTingThatWillBeAdded(pName);
+            }
             return result;
+        }
+
+        private Ting GetTingThatWillBeAdded(string pName) {
+            return _tingsToAddAfterUpdate.Find(t => t.name == pName);
         }
      
         public Ting[] GetTingsInRoom(string pRoomName)

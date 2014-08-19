@@ -421,6 +421,19 @@ namespace TingTing
             return closest;
         }
 
+        public PointTileNode FindClosestFreeTile (IntPoint pPosition, int tileGroup)
+        {
+            var tilesInSameGroup = _tilesByLocalPositionHash.Values.Where(t => t.group == tileGroup);
+            var closestTile = tilesInSameGroup.OrderBy(t => ManhattanDistance(pPosition, t.localPoint)).First();
+            return closestTile;
+        }
+
+//        public PointTileNode[] FindNClosestTiles (IntPoint pPosition, int n)
+//        {
+//            var tilesByDistance = _tilesByLocalPositionHash.Values.OrderBy(t => ManhattanDistance(pPosition, t.localPoint));
+//            return tilesByDistance.Take(n).ToArray();
+//        }
+
         public IntPoint WorldToLocalPoint(IntPoint pSource)
         {
             return pSource - worldPosition;
@@ -475,6 +488,27 @@ namespace TingTing
                 tingsInRoom.AddRange(tile.GetOccupantsOfType<T>());
             }
             return tingsInRoom;
+        }
+
+        public bool HasTinyTileGroup (int pLimit)
+        {
+            Dictionary<int, int> _groupCounts = new Dictionary<int, int>();
+
+            foreach (var tile in tiles) {
+                if(_groupCounts.ContainsKey(tile.group)) {
+                    _groupCounts[tile.group]++;
+                } else {
+                    _groupCounts[tile.group] = 1;
+                }
+            }
+
+            foreach (int g in _groupCounts.Keys) {
+                if (_groupCounts[g] <= pLimit) {
+                    return true;
+                }
+            }
+
+            return false;
         }
     }
 }
