@@ -197,5 +197,10 @@ namespace TingTing
             if (_occupants == null)
                 _occupants = new List<Ting>();
         }
+
+        public string GetOccupantsAsString ()
+        {
+            return string.Join(", ", GetOccupants().Select(o => o.ToString()).ToArray());
+        }
     }
 }

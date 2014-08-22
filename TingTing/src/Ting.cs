@@ -136,6 +136,11 @@ namespace TingTing
 			}
 		}
 
+        public void ForceTriggerCurrentAction() {
+            actionTriggerTime = _tingRunner.actionTime;
+            UpdateAction(0f);
+        }
+
 		public void StartAction(string pActionName, Ting pOtherObject, float pLengthUntilTrigger, float pActionLength)
 		{
 			string oldAction = actionName;
