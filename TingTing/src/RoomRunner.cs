@@ -54,6 +54,12 @@ namespace TingTing
                 throw new TingTingException("Can't find room '" + pName + "' in Room runner");
             }
         }
+
+        public Room GetRoomUnsafe(string pName) {
+            Room r = null;
+            _rooms.TryGetValue(pName, out r);
+            return r;
+        }
      
         public bool HasRoom(string pName)
         {
