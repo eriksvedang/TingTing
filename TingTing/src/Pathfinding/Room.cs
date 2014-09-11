@@ -182,6 +182,10 @@ namespace TingTing
         }
 
         public void SetOptigrid(IList<IntPoint> pPoints) {
+
+            // INVALIDATE CACHE?!
+            _tilePointsOptigridCache = null;
+
             Console.WriteLine("Will set optigrid for room " + name);
 
             if (pPoints.Count == 0) {
