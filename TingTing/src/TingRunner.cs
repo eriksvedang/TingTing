@@ -132,13 +132,18 @@ namespace TingTing
         /// </returns>
         public Ting GetTing(string pName)
         {
-            D.isNull(_tings);
+            //D.isNull(_tings);
             Ting result = GetTingUnsafe(pName);
             if (result != null) {
                 return result;
             }
             else {
+                #if DEBUG
                 throw new CantFindTingException("Can't find Ting with name " + pName + " in TingRunner");
+                #else 
+                D.Log("Can't find Ting with name " + pName + " in TingRunner");
+                return null;
+                #endif
             }
         }
      
