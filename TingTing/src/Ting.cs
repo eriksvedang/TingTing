@@ -345,6 +345,9 @@ namespace TingTing
 				//return CELL_actionName.data;
 			}
 			set {
+//                if(name == "Sebastian") {
+//                    D.Log("Setting actionName to '" + value + "' for Sebastian");
+//                }
 				CELL_actionName.data = value;
                 _actionName_Cache = value;
 			}
