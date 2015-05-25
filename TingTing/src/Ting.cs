@@ -75,6 +75,7 @@ namespace TingTing
 
         protected bool _dialogueLineIsEmpty_Cache;
         protected string _actionName_Cache;
+        public string lastConversation = "";
 
 		protected override void SetupCells()
 		{
