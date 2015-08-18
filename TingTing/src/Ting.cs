@@ -51,7 +51,12 @@ namespace TingTing
 
 		public virtual void Update(float dt)
 		{
+            UnregisterFromUpdateLoop();
 		}
+
+        protected void UnregisterFromUpdateLoop() {
+            _tingRunner.Unregister(this);
+        }
 
 		public virtual void FixBeforeSaving()
 		{

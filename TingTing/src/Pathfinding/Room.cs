@@ -166,6 +166,13 @@ namespace TingTing
 
         #endregion
 
+        public void Reset()
+        {
+            foreach (TileNode t in _tilesByLocalPositionHash.Values) {
+                t.Reset();
+            }
+        }
+
         public void SetTiles(IList<IntPoint> pPoints)
         {
             #if DEBUG && LOG

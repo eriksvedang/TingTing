@@ -24,6 +24,10 @@ namespace TingTing
         private List<Ting> _tingsToAddAfterUpdate = new List<Ting>();
         private List<string> _tingsToRemoveAfterUpdate = new List<string>();
 
+        private List<Ting> _tingsThatShouldGetUpdated = new List<Ting>();
+        private List<Ting> _newTingsThatShouldGetUpdated = new List<Ting>();
+        private List<Ting> _tingsThatShouldStopGetUpdated = new List<Ting>();
+
         public TingRunner(RelayTwo pRelay, RoomRunner pRoomRunner)
         {
             D.isNull(pRelay);
@@ -57,6 +61,7 @@ namespace TingTing
         {
             if (!_tings.ContainsKey(t.name)) {
                 _tings.Add(t.name, t);
+                _newTingsThatShouldGetUpdated.Add(t);
             }
             else {
                 throw new TingDuplicateException(" can't have two tings with the same name: " + t.name);
@@ -171,17 +176,13 @@ namespace TingTing
      
         public Ting[] GetTingsInRoom(string pRoomName)
         {
-            List<Ting> tingsInRoom = new List<Ting>();
-            foreach (Ting t in _tings.Values) {
-                if (t.position.roomName == pRoomName) {
-                    tingsInRoom.Add(t);
-                }
-            }
-            return tingsInRoom.ToArray();
+            Room room = _roomRunner.GetRoom(pRoomName);
+            return room.GetTings().ToArray();
         }
      
         public TingType[] GetTingsOfType<TingType>() where TingType : Ting
         {
+            // TODO: WARNING, VERY SLOW!
             List<TingType> tingsOfType = new List<TingType>();
             foreach (Ting t in _tings.Values) {
                 if (t is TingType)
@@ -198,13 +199,8 @@ namespace TingTing
                 throw new Exception("Can't find room with name " + pRoomName);
             }
 #endif
-            List<TingType> tingsInRoomOfType = new List<TingType>();
-            foreach (Ting t in _tings.Values) {
-                if (t is TingType && t.position.roomName == pRoomName) {
-                    tingsInRoomOfType.Add(t as TingType);
-                }
-            }
-            return tingsInRoomOfType.ToArray();
+            Room room = _roomRunner.GetRoom(pRoomName);
+            return room.GetTingsOfType<TingType>().ToArray();
         }
      
         public bool HasTing(string pName)
@@ -216,6 +212,7 @@ namespace TingTing
         public void RemoveTing(string pName)
         {
             Ting tingToRemove = GetTing(pName);
+            _tingsThatShouldGetUpdated.Remove(tingToRemove);
             tingToRemove.table.RemoveRowAt(tingToRemove.objectId);
             tingToRemove.isDeleted = true;
             _tings.Remove(pName);
@@ -233,9 +230,17 @@ namespace TingTing
      
         public void Update(float dt, GameTime pGameClock, float pActionTime)
         {
+            _tingsThatShouldGetUpdated.AddRange(_newTingsThatShouldGetUpdated);
+            _newTingsThatShouldGetUpdated.Clear();
+
+            foreach(var t in _tingsThatShouldStopGetUpdated) {
+                _tingsThatShouldGetUpdated.Remove(t);
+            }
+            _tingsThatShouldStopGetUpdated.Clear();
+
             gameClock = pGameClock;
             actionTime = pActionTime;
-            foreach (Ting t in _tings.Values) {
+            foreach (Ting t in _tingsThatShouldGetUpdated) {
                 t.Update(dt);
                 t.UpdateAction(pActionTime);
             }
@@ -247,6 +252,8 @@ namespace TingTing
                 RemoveTing(name);
             }
             _tingsToRemoveAfterUpdate.Clear();
+
+            //D.Log("Updated " + _tingsThatShouldGetUpdated.Count + " tings this frame.");
         }
 
         public override string ToString()
@@ -258,6 +265,11 @@ namespace TingTing
             get {
                 return _loadedTingTables.Keys;
             }
+        }
+
+        public void Unregister(Ting pUnregisterThisTing)
+        {
+            _tingsThatShouldStopGetUpdated.Add(pUnregisterThisTing);
         }
     }
 }

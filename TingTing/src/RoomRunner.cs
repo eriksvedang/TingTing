@@ -83,14 +83,7 @@ namespace TingTing
         public void Reset()
         {
             foreach (Room room in _rooms.Values) {
-                ResetRoom(room);
-            }
-        }
-        
-        public void ResetRoom(Room pRoom)
-        {
-            foreach (TileNode t in pRoom._tilesByLocalPositionHash.Values) {
-                t.Reset();
+                room.Reset();
             }
         }
      
