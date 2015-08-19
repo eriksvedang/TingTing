@@ -300,6 +300,17 @@ namespace TingTing
             }
 		}
 
+        [ShowInEditor]
+        public int tileGroupJustForDebuggingView {
+            get {
+                if(tile != null) {
+                    return tile.group;
+                } else {
+                    return -666;
+                }
+            }
+        }
+
 #if CACHING
         protected void SetCachedTile() {
             _cachedTile = room.GetTile(localPoint);
