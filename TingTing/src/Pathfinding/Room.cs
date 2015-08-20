@@ -168,7 +168,7 @@ namespace TingTing
 
         public void Reset()
         {
-            foreach (TileNode t in _tilesByLocalPositionHash.Values) {
+            foreach (PointTileNode t in _tilesByLocalPositionHash.Values) {
                 t.Reset();
             }
         }

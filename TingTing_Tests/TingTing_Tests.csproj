@@ -10,24 +10,25 @@
     <RootNamespace>TingTing_Tests</RootNamespace>
     <AssemblyName>TingTing_Tests</AssemblyName>
     <StartupObject>TingTing_Tests.MainClass</StartupObject>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <Externalconsole>true</Externalconsole>
+    <Externalconsole>True</Externalconsole>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
@@ -55,10 +56,6 @@
     <ProjectReference Include="..\TingTing\TingTing.csproj">
       <Project>{C9BF9326-03A2-482A-B8A2-23FD0C848A2E}</Project>
       <Name>TingTing</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Pathfinding\Pathfinding\Pathfinding.csproj">
-      <Project>{B88C6623-0FC9-4F9C-8D64-F70599C12205}</Project>
-      <Name>Pathfinding</Name>
     </ProjectReference>
     <ProjectReference Include="..\..\Relay\Relay\Relay.csproj">
       <Project>{9CFC0B9C-EC60-4488-9D4A-79F191AA5AFF}</Project>

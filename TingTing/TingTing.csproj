@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project DefaultTargets="Build" ToolsVersion="3.5" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
@@ -30,26 +30,25 @@
     <IsWebBootstrapper>false</IsWebBootstrapper>
     <UseApplicationTrust>false</UseApplicationTrust>
     <BootstrapperEnabled>true</BootstrapperEnabled>
-    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugSymbols>true</DebugSymbols>
+    <DebugSymbols>True</DebugSymbols>
     <DebugType>full</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Debug</OutputPath>
     <DefineConstants>DEBUG;</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <DebugType>none</DebugType>
-    <Optimize>false</Optimize>
+    <Optimize>False</Optimize>
     <OutputPath>bin\Release</OutputPath>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <ConsolePause>false</ConsolePause>
+    <ConsolePause>False</ConsolePause>
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
@@ -73,6 +72,14 @@
     <Compile Include="src\RoomRunner.cs" />
     <Compile Include="src\ShowInEditorAttribute.cs" />
     <Compile Include="src\WorldCoordinate.cs" />
+    <Compile Include="src\TilePathFinder\Path.cs" />
+    <Compile Include="src\TilePathFinder\PathSolver.cs" />
+    <Compile Include="src\TilePathFinder\Datastructures\AStarStack.cs" />
+    <Compile Include="src\TilePathFinder\Interfaces\IPathNetwork.cs" />
+    <Compile Include="src\TilePathFinder\Interfaces\IPathNode.cs" />
+    <Compile Include="src\TilePathFinder\Interfaces\IPoint.cs" />
+    <Compile Include="src\TilePathFinder\Interfaces\PathLink.cs" />
+    <Compile Include="src\TilePathFinder\TileNode.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <ItemGroup>
@@ -83,10 +90,6 @@
     <ProjectReference Include="..\..\Relay\Relay\Relay.csproj">
       <Project>{9CFC0B9C-EC60-4488-9D4A-79F191AA5AFF}</Project>
       <Name>Relay</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\..\Pathfinding\Pathfinding\Pathfinding.csproj">
-      <Project>{B88C6623-0FC9-4F9C-8D64-F70599C12205}</Project>
-      <Name>Pathfinding</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -119,4 +122,7 @@
       </Properties>
     </MonoDevelop>
   </ProjectExtensions>
+  <ItemGroup>
+    <Folder Include="src\TilePathFinder\" />
+  </ItemGroup>
 </Project>

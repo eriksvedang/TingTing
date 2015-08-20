@@ -8,7 +8,7 @@ using Pathfinding;
 
 namespace TingTing
 {
-    public class RoomRunner : IPathNetwork<PointTileNode>, IPreloadable
+    public class RoomRunner : IPreloadable
     {
         TableTwo _roomTable;
         Dictionary<string, Room> _rooms = new Dictionary<string, Room>();

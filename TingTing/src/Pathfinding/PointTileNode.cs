@@ -8,19 +8,60 @@ using GameTypes;
 
 namespace TingTing
 {
-    public class PointTileNode : TileNode
+    public class PointTileNode
     {
         public Room room { get; set; }
 
         private List<Ting> _occupants;
         private PointTileNode _target = null;
-
         public int group { get; set; }
 
-        public PointTileNode(IntPoint pLocalPoint, Room r) : base(pLocalPoint)
+        // moved down from TileNode
+        public List<PathLink> links;
+        public IntPoint localPoint;
+        public float pathCostHere;
+        public float distanceToGoal;
+        public float targetValue;
+        public bool isStartNode;
+        public bool isGoalNode;
+        public bool visited;
+        public PathLink linkLeadingHere;
+        public float baseCost;
+
+        public void Reset()
+        {
+            distanceToGoal = 0f;
+            isGoalNode = false;
+            isStartNode = false;
+            linkLeadingHere = null;
+            pathCostHere = 0f;
+            visited = false;
+        }
+
+        public override bool Equals(object obj)
+        {
+            if(!(obj is PointTileNode)) return false;
+
+            var other = obj as PointTileNode;
+
+            return 
+                    (room == other.room) &&
+                    (group == other.group) &&
+                    (_target == other._target) &&
+                    (_occupants == other._occupants);
+        }
+
+        public override int GetHashCode()
+        {
+            return base.GetHashCode();
+        }
+
+        public PointTileNode(IntPoint pLocalPoint, Room r)
         {
             room = r;
             group = -1;
+            links = new List<PathLink>(5);
+            localPoint = pLocalPoint;
         }
 
         public override string ToString()
@@ -82,23 +123,72 @@ namespace TingTing
                 return _target;
             }
         }
-     
-        public override float DistanceTo(Pathfinding.IPoint pPoint)
+
+        public void AddLink(PathLink pLink)
         {
-            if (pPoint is TileNode) {
-                PointTileNode otherNode = pPoint as PointTileNode;
-                return worldPoint.EuclidianDistanceTo(otherNode.worldPoint);
+            links.Add(pLink);
+        }
+        
+        public void RemoveLink(PathLink pLink)
+        {
+            links.Remove(pLink);
+        }
+                
+        public void RemoveAllLinks ()
+        {
+            links.Clear ();
+        }
+        
+        public PathLink GetLinkTo(PointTileNode pNode)
+        {
+            if (links != null) {
+                foreach (PathLink p in links) {
+                    if (p.Contains(pNode)) {
+                        return p;
+                    }
+                }
+            }
+            
+            return null;
+        }
+        
+        public bool isIsolated() {
+            return links.Count == 0;
+        }
+ 
+        public virtual float DistanceTo(PointTileNode pPoint)
+        {
+            if (pPoint is PointTileNode) {
+                PointTileNode otherNode = pPoint;
+                return localPoint.EuclidianDistanceTo(otherNode.localPoint);
             }
             else {
                 throw new NotImplementedException();
             }
         }
-     
-        public override long GetUniqueID()
+
+        public int CompareTo(object obj)
         {
-            return BitCruncher.PackTwoInts(position.roomName.GetHashCode(), position.localPosition.GetHashCode());
+            PointTileNode target = obj as PointTileNode;
+            targetValue = target.pathCostHere + target.distanceToGoal;
+            float thisValue = pathCostHere + distanceToGoal;
+            
+            if (targetValue > thisValue) {
+                return 1;
+            }
+            else if (targetValue == thisValue) {
+                return 0;
+            }
+            else {
+                return -1;
+            }
         }
 
+        public virtual long GetUniqueID()
+        {
+            return BitCruncher.PackTwoInts(localPoint.x, localPoint.y);
+        }
+     
         public void AddOccupant(Ting pTing)
         {
             EnsureOccapantList();

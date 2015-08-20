@@ -7,7 +7,7 @@ using GameTypes;
 
 namespace TingTing
 {
-    class MultiRoomNetwork : IPathNetwork<PointTileNode>
+    class MultiRoomNetwork
     {
 
         PointTileNode[] nodes = null;
