@@ -269,11 +269,23 @@ namespace TingTing
 
         public void Register(Ting pRegisterThisTing)
         {
+            if(_tings.ContainsKey(pRegisterThisTing.name)) {
+                return;
+            }
+
+            if(_newTingsThatShouldGetUpdated.Contains(pRegisterThisTing)) {
+                return;
+            }
+
             _newTingsThatShouldGetUpdated.Add(pRegisterThisTing);
         }
 
         public void Unregister(Ting pUnregisterThisTing)
         {
+            if(_tingsThatShouldStopGetUpdated.Contains(pUnregisterThisTing)) {
+                return;
+            }
+
             _tingsThatShouldStopGetUpdated.Add(pUnregisterThisTing);
         }
     }
