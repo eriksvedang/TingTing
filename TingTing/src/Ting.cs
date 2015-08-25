@@ -51,7 +51,7 @@ namespace TingTing
 
 		public virtual void Update(float dt)
 		{
-            UnregisterFromUpdateLoop();
+
 		}
 
         protected void UnregisterFromUpdateLoop() {

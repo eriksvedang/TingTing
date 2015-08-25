@@ -267,6 +267,11 @@ namespace TingTing
             }
         }
 
+        public void Register(Ting pRegisterThisTing)
+        {
+            _newTingsThatShouldGetUpdated.Add(pRegisterThisTing);
+        }
+
         public void Unregister(Ting pUnregisterThisTing)
         {
             _tingsThatShouldStopGetUpdated.Add(pUnregisterThisTing);
