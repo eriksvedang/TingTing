@@ -231,6 +231,7 @@ namespace TingTing
             optiGridOffset = upperLeft;
             optiGridSize = (lowerRight - upperLeft) + new IntPoint(1, 1);
             int totalPointsInGrid = optiGridSize.x * optiGridSize.y;
+
             //Console.WriteLine("Size: " + optiGridSize + " total points in grid: " + totalPointsInGrid);
 
             char[] positions = new char[totalPointsInGrid];
