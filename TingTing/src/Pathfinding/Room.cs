@@ -360,7 +360,10 @@ namespace TingTing
                 _tilesByLocalPositionHash.Add(pTileNode.localPoint.GetHashCode(), pTileNode);
             }
             catch (Exception e) {
-                throw new Exception("Could not add tileNode at: " + pTileNode.localPoint.ToString() + " hashcode " + pTileNode.GetHashCode(), e);
+                //throw new Exception("Could not add tileNode at: " + pTileNode.localPoint.ToString() + " hashcode " + pTileNode.GetHashCode(), e);
+                Console.ForegroundColor = ConsoleColor.Yellow;
+                D.Log("Could not add tileNode at: " + pTileNode.localPoint.ToString() + " hashcode " + pTileNode.GetHashCode() + " EXCEPTION: " + e);
+                Console.ForegroundColor = ConsoleColor.White;
             }
             AddTileLinks(pTileNode);
             RefreshTileData();
